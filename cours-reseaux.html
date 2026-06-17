@@ -127,6 +127,7 @@
   .examshot{display:block;width:100%;max-width:720px;border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow);margin:8px auto;cursor:zoom-in}
   .pdf-link{display:inline-block;margin:6px 0 2px;font-weight:700;background:#eef0f7;padding:7px 14px;border-radius:9px}
   .pdf-link:hover{background:#e2e7fb}
+  pre.topo{background:#0f1226;color:#aef5e4;padding:14px 16px;border-radius:10px;overflow:auto;font-size:13px;line-height:1.45;font-family:'Consolas',monospace}
   @media(max-width:980px){
     nav#toc{display:none}
     .hero{padding:36px 22px}.hero h1{font-size:28px}.content{padding:6px 16px}
@@ -164,6 +165,7 @@
 
   <div class="grp">Pour cartonner</div>
   <a href="#exos9">📝 Annales spécial Chap. 9 <span class="tag hot">★</span></a>
+  <a href="#blanc2026">🧪 EMD Blanc 2026 (corrigé) <span class="tag hot">NEW</span></a>
   <a href="#recettes">🍳 Recettes d'exercices</a>
   <a href="#annales">📜 Annales décortiquées</a>
   <a href="#flashcards">🃏 Révision express</a>
@@ -1183,6 +1185,171 @@
 
     <div class="box simple"><div class="bt">💡 Conseil d'entraînement</div>
       Les sujets ci-dessus sont <b>vierges</b> (réponses effacées) et la solution est <b>repliée</b>. <b>Fais l'exercice sur papier</b> à partir de l'image, puis ouvre « ✅ Solution » pour comparer (mon explication <i>et</i> le corrigé original). C'est en faisant à la main que ça rentre. Vise les 3 exercices en ~1h, comme à l'examen.</div>
+  </section>
+
+  <!-- ============ EMD BLANC 2026 ============ -->
+  <section id="blanc2026" class="chap">
+    <h2><span class="num">🧪</span> EMD Blanc 2026 — sujet + corrigé complet</h2>
+    <p class="lead">Examen blanc <b>calqué sur la structure de ton examen de Janvier 2026</b> (Ex1 Modulation + Multiplexage · Ex2 Interconnexion WAN + Adressage + Routage + Fragmentation · Ex3 IPv6). Durée conseillée : <b>1h30</b>, noté sur <b>20</b>. Fais-le sur papier, puis ouvre les solutions.</p>
+    <div class="box trap"><div class="bt">⚠️ À lire</div>
+      Ce sujet est un <b>entraînement inventé</b> qui imite le format de ton vrai examen (que je n'ai pas pu lire en détail, photo trop floue). Les <b>méthodes et le type de questions sont identiques</b> à tes annales — c'est ça qui compte. Justifie toujours tes réponses.</div>
+
+    <!-- ===== EX1 ===== -->
+    <div class="exam-card">
+      <h3>Exercice 1 — Modulation &amp; Multiplexage temporel <span style="font-weight:400">(6 pts)</span></h3>
+      <p>Une entreprise relie <b>trois PC (PC1, PC2, PC3)</b> à un ordinateur distant. Chaque PC possède un modem (même configuration) raccordé à un <b>multiplexeur temporel synchrone</b> (ordre PC1, PC2, PC3) qui partage une <b>ligne haute vitesse (HV)</b>. La norme de communication utilise une modulation combinant <b>2 amplitudes</b> (A1, A2), <b>4 phases</b> (0, π/2, π, 3π/2) et <b>1 seule fréquence</b>. Le <b>débit de chaque modem est de 3000 b/s</b>.</p>
+      <p>La séquence binaire observée sur la voie HV est :</p>
+      <div class="bits">110 010 001 101 000 111</div>
+      <ol>
+        <li>Donner la <b>valence V</b> du signal et le nombre de bits par état <b>n</b>. (1 pt)</li>
+        <li>Calculer la <b>rapidité de modulation d'un modem</b>, puis celle du <b>multiplexeur</b> et le <b>débit de la ligne HV</b>. (1,5 pt)</li>
+        <li>Calculer la <b>durée d'un état multiplexeur</b> Δ<sub>mux</sub> et la valeur du <b>quantum</b> Q (Q = 1 état mux). En déduire la <b>période de scrutation</b> Ts. (1,5 pt)</li>
+        <li>À partir de la séquence HV, donner le <b>message de chaque PC</b>. Combien de <b>scrutations</b> ? (1,5 pt)</li>
+        <li>Proposer un <b>codage</b> (table : 3 bits → amplitude + phase). (0,5 pt)</li>
+      </ol>
+      <details class="solution"><summary>✅ Corrigé Exercice 1 (clique pour révéler)</summary><div class="inner">
+        <p><b>1) Valence.</b> V = (nb amplitudes) × (nb phases) × (nb fréquences) = 2 × 4 × 1 = <b>V = 8</b>. Donc <b>n = log₂(8) = 3 bits/état</b>.</p>
+        <p><b>2) Rapidités &amp; débit.</b> Pour un modem : D = n × R ⟹ <b>R = D/n = 3000/3 = 1000 bauds</b>.<br>
+        Multiplexeur synchrone, 3 voies identiques : <b>R<sub>mux</sub> = 3 × 1000 = 3000 bauds</b>.<br>
+        Débit HV : D<sub>mux</sub> = n × R<sub>mux</sub> = 3 × 3000 = <b>9000 b/s</b> (= 3 × 3000, somme des débits des 3 modems ✓).</p>
+        <p><b>3) Δmux, quantum, scrutation.</b> Δ<sub>mux</sub> = 1/R<sub>mux</sub> = 1/3000 = <b>0,333 ms</b>.<br>
+        Q = 1 état mux ⟹ <b>Q = 0,333 ms</b> (et le buffer stocke 1 état = <b>n = 3 bits</b>).<br>
+        Période de scrutation : Ts = 3 × Q = <b>1 ms</b>.</p>
+        <p><b>4) Messages.</b> Chaque état = 3 bits, distribués à tour de rôle PC1→PC2→PC3 :</p>
+        <table class="mono">
+          <tr><th>État (3 bits)</th><th>110</th><th>010</th><th>001</th><th>101</th><th>000</th><th>111</th></tr>
+          <tr><td>Destinataire</td><td>PC1</td><td>PC2</td><td>PC3</td><td>PC1</td><td>PC2</td><td>PC3</td></tr>
+          <tr><td>Scrutation</td><td>1</td><td>1</td><td>1</td><td>2</td><td>2</td><td>2</td></tr>
+        </table>
+        <p><b>MSG PC1 = 110 101</b> · <b>MSG PC2 = 010 000</b> · <b>MSG PC3 = 001 111</b>. Il faut <b>2 scrutations</b> (6 états ÷ 3 voies).</p>
+        <p><b>5) Codage proposé</b> (bit 1 = amplitude, bits 2-3 = phase) :</p>
+        <table class="mono">
+          <tr><th>Bits</th><th>000</th><th>001</th><th>010</th><th>011</th><th>100</th><th>101</th><th>110</th><th>111</th></tr>
+          <tr><td>Ampl.</td><td>A1</td><td>A1</td><td>A1</td><td>A1</td><td>A2</td><td>A2</td><td>A2</td><td>A2</td></tr>
+          <tr><td>Phase</td><td>0</td><td>π/2</td><td>π</td><td>3π/2</td><td>0</td><td>π/2</td><td>π</td><td>3π/2</td></tr>
+        </table>
+      </div></details>
+    </div>
+
+    <!-- ===== EX2 ===== -->
+    <div class="exam-card">
+      <h3>Exercice 2 — Interconnexion WAN + Adressage + Routage + Fragmentation <span style="font-weight:400">(10 pts)</span></h3>
+      <p>Une entreprise possède <b>3 LAN</b> reliés par un routeur central <b>R4</b> (qui assure aussi l'accès à <b>Internet</b> via une liaison ADSL) :</p>
+      <ul>
+        <li><b>LAN1</b> en <b>100 Base TX</b> (≤ 25 machines) — routeur <b>R1</b></li>
+        <li><b>LAN2</b> en <b>10 Base 2</b> (≤ 25 machines) — routeur <b>R2</b></li>
+        <li><b>LAN3</b> en <b>FDDI</b> (≤ 25 machines) — routeur <b>R3</b></li>
+      </ul>
+      <pre class="topo">      LAN1 (100BaseTX)     LAN2 (10Base2)      LAN3 (FDDI)
+            |                   |                   |
+           [R1]                [R2]                [R3]
+            |                   |                   |
+        lien R1-R4          lien R2-R4          lien R3-R4
+             \                  |                  /
+              \                 |                 /
+               =============== [R4] ===============
+                                |
+                            Internet (ADSL)</pre>
+      <ol>
+        <li>Pour chaque LAN, préciser le <b>type de câble, l'équipement et la topologie</b>. Quel équipement relie l'entreprise à Internet ? (2 pts)</li>
+        <li>En utilisant <b>une seule adresse 192.168.10.0</b>, proposer un <b>plan d'adressage</b> (masque, sous-réseaux, @ interfaces des routeurs). (4 pts)</li>
+        <li>Donner les <b>tables de routage</b> de R1 et de R4 (chemin le plus court). (2 pts)</li>
+        <li>Une machine de LAN1 (MTU 1500) envoie un datagramme de <b>2400 octets</b> (ID = 100) vers une machine de LAN2. Le lien <b>R1-R4 a un MTU de 620 octets</b>. Décrire la <b>fragmentation</b> (ID, Offset, drapeau MF de chaque fragment). (2 pts)</li>
+      </ol>
+      <details class="solution"><summary>✅ Corrigé Exercice 2 (clique pour révéler)</summary><div class="inner">
+        <p><b>1) Câbles / équipements / topologies.</b></p>
+        <table>
+          <tr><th>LAN</th><th>Norme</th><th>Câble</th><th>Équipement</th><th>Topologie</th></tr>
+          <tr><td>LAN1</td><td>100 Base TX</td><td>paire torsadée</td><td>switch, RJ45</td><td>étoile</td></tr>
+          <tr><td>LAN2</td><td>10 Base 2</td><td>coaxial fin</td><td>connecteurs BNC en T + bouchons</td><td>bus</td></tr>
+          <tr><td>LAN3</td><td>FDDI</td><td>fibre optique</td><td>MAU / anneau</td><td>anneau</td></tr>
+        </table>
+        <p>Accès Internet = un <b>routeur (R4) + un modem ADSL</b>.</p>
+        <p><b>2) Plan d'adressage.</b> Réseaux à adresser : 3 LAN + 3 liens routeur-routeur = <b>6 réseaux</b> → 2^s ≥ 6 → <b>s = 3 bits</b>. Classe C : 8 − 3 = <b>5 bits hôte</b> → 2⁵ − 2 = <b>30 machines</b>/réseau (≥ 25 ✓). Masque <b>/27 = 255.255.255.224</b>, bloc = 32.</p>
+        <table class="mono">
+          <tr><th>Réseau</th><th>Plage</th><th>@ interfaces routeurs</th></tr>
+          <tr><td>LAN1 : 192.168.10.0/27</td><td>.1 → .30</td><td>R1 : .1</td></tr>
+          <tr><td>LAN2 : 192.168.10.32/27</td><td>.33 → .62</td><td>R2 : .33</td></tr>
+          <tr><td>LAN3 : 192.168.10.64/27</td><td>.65 → .94</td><td>R3 : .65</td></tr>
+          <tr><td>Lien R1-R4 : 192.168.10.96/27</td><td>.97 → .126</td><td>R1 : .97 / R4 : .98</td></tr>
+          <tr><td>Lien R2-R4 : 192.168.10.128/27</td><td>.129 → .158</td><td>R2 : .129 / R4 : .130</td></tr>
+          <tr><td>Lien R3-R4 : 192.168.10.160/27</td><td>.161 → .190</td><td>R3 : .161 / R4 : .162</td></tr>
+        </table>
+        <p>(.192/27 et .224/27 restent libres.)</p>
+        <p><b>3) Tables de routage.</b></p>
+        <div class="grid2">
+          <div><b>R1</b> (atteint tout le reste via R4) :
+          <table class="mono"><tr><th>Réseau</th><th>Saut</th><th>Sortie</th></tr>
+          <tr><td>192.168.10.0 (LAN1)</td><td>C</td><td>.1</td></tr>
+          <tr><td>192.168.10.96 (lien)</td><td>C</td><td>.97</td></tr>
+          <tr><td>LAN2 / LAN3</td><td>.98 (R4)</td><td>.97</td></tr>
+          <tr><td>liens R2-R4 / R3-R4</td><td>.98 (R4)</td><td>.97</td></tr>
+          <tr><td>Internet</td><td>.98 (R4)</td><td>.97</td></tr></table></div>
+          <div><b>R4</b> (le routeur central) :
+          <table class="mono"><tr><th>Réseau</th><th>Saut</th><th>Sortie</th></tr>
+          <tr><td>liens R1/R2/R3-R4</td><td>C</td><td>.98 / .130 / .162</td></tr>
+          <tr><td>LAN1</td><td>.97 (R1)</td><td>.98</td></tr>
+          <tr><td>LAN2</td><td>.129 (R2)</td><td>.130</td></tr>
+          <tr><td>LAN3</td><td>.161 (R3)</td><td>.162</td></tr>
+          <tr><td>Internet</td><td>C (ADSL)</td><td>—</td></tr></table></div>
+        </div>
+        <p><b>4) Fragmentation</b> (datagramme 2400 o, ID = 100, lien MTU = 620).</p>
+        <ul>
+          <li>Données utiles = 2400 − 20 (en-tête) = <b>2380 octets</b>.</li>
+          <li>Données max/fragment = ⌊(620 − 20)/8⌋ × 8 = ⌊600/8⌋ × 8 = <b>600 octets</b>.</li>
+          <li>2380 = 600 + 600 + 600 + 580 → <b>4 fragments</b>. R1 fragmente (le lien R1-R4 a un MTU plus petit).</li>
+        </ul>
+        <table class="mono">
+          <tr><th>Fragment</th><th>Données</th><th>ID</th><th>Offset</th><th>MF</th></tr>
+          <tr><td>F1</td><td>600</td><td>100</td><td>0</td><td>1</td></tr>
+          <tr><td>F2</td><td>600</td><td>100</td><td>600/8 = 75</td><td>1</td></tr>
+          <tr><td>F3</td><td>600</td><td>100</td><td>1200/8 = 150</td><td>1</td></tr>
+          <tr><td>F4</td><td>580</td><td>100</td><td>1800/8 = 225</td><td><b>0</b></td></tr>
+        </table>
+        <p><span style="color:var(--simple)">Vérif : 600×3 + 580 = 2380 ✓ ; dernier fragment MF = 0 ✓.</span></p>
+      </div></details>
+    </div>
+
+    <!-- ===== EX3 ===== -->
+    <div class="exam-card">
+      <h3>Exercice 3 — Adressage IPv6 <span style="font-weight:400">(7 pts)</span></h3>
+      <p>Soit l'adresse IPv6 suivante :</p>
+      <div class="bits">2001:0db8:0000:0000:00a3:0000:0000:1428</div>
+      <ol>
+        <li>Donner la <b>taille</b> d'une adresse IPv6 et son <b>nombre de groupes</b>. (1 pt)</li>
+        <li>Donner les <b>deux abréviations possibles</b> de cette adresse, puis la <b>seule valide</b> selon la norme (RFC 5952). (2,5 pts)</li>
+        <li><b>Décompresser</b> (forme complète) l'adresse <code>fe80::1</code>. (1,5 pt)</li>
+        <li>Vrai ou Faux (justifier) : (2 pts)
+          <ul>
+            <li>a. IPv6 supprime l'adresse de broadcast et la remplace par le multicast.</li>
+            <li>b. Une adresse lien-local (fe80::/10) est routable sur Internet.</li>
+            <li>c. Le symbole « :: » peut apparaître deux fois dans une adresse.</li>
+          </ul>
+        </li>
+      </ol>
+      <details class="solution"><summary>✅ Corrigé Exercice 3 (clique pour révéler)</summary><div class="inner">
+        <p><b>1)</b> Une adresse IPv6 fait <b>128 bits</b>, écrite en <b>8 groupes</b> de 16 bits (4 chiffres hexadécimaux chacun).</p>
+        <p><b>2) Abréviations.</b> Étape 1 — supprimer les zéros de tête de chaque groupe :</p>
+        <div class="bits">2001 : db8 : 0 : 0 : a3 : 0 : 0 : 1428</div>
+        <p>Il y a <b>deux suites de zéros</b> (groupes 3-4, et groupes 6-7), de même longueur (2 groupes). Comme « :: » ne s'utilise qu'<b>une seule fois</b>, il y a <b>deux abréviations possibles</b> :</p>
+        <ul>
+          <li><b>A)</b> <code>2001:db8::a3:0:0:1428</code> (on comprime la 1ʳᵉ suite)</li>
+          <li><b>B)</b> <code>2001:db8:0:0:a3::1428</code> (on comprime la 2ᵉ suite)</li>
+        </ul>
+        <p>Règle RFC 5952 : à longueur égale, on comprime la suite <b>la plus à gauche</b> → <b>seule valide : A) <code>2001:db8::a3:0:0:1428</code></b>.</p>
+        <p><b>3) Décompression de fe80::1.</b> Le « :: » remplace les groupes nuls manquants pour atteindre 8 groupes :</p>
+        <div class="bits">fe80:0000:0000:0000:0000:0000:0000:0001</div>
+        <p><b>4) Vrai / Faux.</b></p>
+        <ul>
+          <li><b>a. VRAI</b> — IPv6 n'a <b>pas</b> de broadcast ; la diffusion se fait par <b>multicast</b> (ex. ff02::1 = tous les nœuds du lien).</li>
+          <li><b>b. FAUX</b> — une adresse <b>lien-local</b> n'est valable que sur le <b>lien local</b> ; elle n'est <b>pas routée</b> sur Internet.</li>
+          <li><b>c. FAUX</b> — « :: » ne peut apparaître qu'<b>une seule fois</b> (sinon l'adresse serait ambiguë).</li>
+        </ul>
+      </div></details>
+    </div>
+
+    <div class="box simple"><div class="bt">💡 Comment t'en servir</div>
+      Mets-toi en conditions : <b>1h30, sans regarder</b>. Fais les 3 exercices sur papier, puis ouvre chaque « ✅ Corrigé » pour te corriger. Refais celui qui t'a posé problème le lendemain.</div>
   </section>
 
   <!-- ============ RECETTES ============ -->
