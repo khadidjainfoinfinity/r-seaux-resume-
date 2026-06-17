@@ -118,6 +118,15 @@
   .tip-inline{background:#fff7d6;padding:1px 6px;border-radius:5px}
   hr{border:none;border-top:1px dashed var(--line);margin:26px 0}
   .footer{text-align:center;color:var(--soft);padding:40px;font-size:13.5px}
+  /* exam practice cards */
+  .exam-card{border:1px solid var(--line);border-radius:16px;padding:18px 20px;margin:22px 0;background:#fcfcff;border-left:5px solid var(--exam)}
+  .exam-card h3{border-bottom:none;margin:.1em 0 .2em;color:#23306e}
+  .exam-card .meta{display:flex;flex-wrap:wrap;gap:7px;margin:8px 0 14px}
+  .exam-card .meta span{font-size:12px;padding:3px 11px;border-radius:20px;background:#eef0f7;color:#3a4a78;font-weight:600}
+  .exam-card .meta span.pts{background:var(--exam-bg);color:var(--exam)}
+  .examshot{display:block;width:100%;max-width:720px;border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow);margin:8px auto;cursor:zoom-in}
+  .pdf-link{display:inline-block;margin:6px 0 2px;font-weight:700;background:#eef0f7;padding:7px 14px;border-radius:9px}
+  .pdf-link:hover{background:#e2e7fb}
   @media(max-width:980px){
     nav#toc{display:none}
     .hero{padding:36px 22px}.hero h1{font-size:28px}.content{padding:6px 16px}
@@ -154,6 +163,7 @@
   <a href="#c11">11 · ARP, ICMP, TCP, UDP <span class="tag mid">moy</span></a>
 
   <div class="grp">Pour cartonner</div>
+  <a href="#exos9">📝 Annales spécial Chap. 9 <span class="tag hot">★</span></a>
   <a href="#recettes">🍳 Recettes d'exercices</a>
   <a href="#annales">📜 Annales décortiquées</a>
   <a href="#flashcards">🃏 Révision express</a>
@@ -1025,6 +1035,151 @@
     </div>
   </section>
 
+  <!-- ============ ANNALES CHAP 9 ============ -->
+  <section id="exos9" class="chap">
+    <h2><span class="num">📝</span> Annales — spécial Chapitre 9 (Adressage IP)</h2>
+    <p class="lead">3 exercices d'examens réels qui, <b>ensemble, couvrent TOUT le Chapitre 9</b> : décoder une IP (masque, @réseau, hôtes, broadcast), concevoir un plan d'adressage complet, et remplir les tables de routage. La <b>question est l'image du sujet original</b> (non réécrite) ; dessous, ma <b>solution expliquée pas-à-pas</b>. Clique une image pour l'agrandir, ou ouvre le PDF d'origine.</p>
+
+    <div class="box exam"><div class="bt">🎯 Pourquoi ces 3-là ?</div>
+      <ul>
+        <li><b>2020 ISIL</b> → t'entraîne à <b>décoder une IP</b> (/20, /26) + petites tables de routage. C'est la mécanique pure.</li>
+        <li><b>2017 ACAD</b> → le <b>plan d'adressage complet</b> à partir d'<b>une seule</b> adresse classe C + interconnexion + tables de routage. L'exercice « roi ».</li>
+        <li><b>2022 ISIL</b> → les <b>vérifications</b> : adresses d'hôtes valides, broadcast, multicast, et raisonnement sur une panne. Ce qui complète le reste.</li>
+      </ul>
+      Fais-les dans cet ordre. Si tu réussis les 3, tu as le Chapitre 9 dans la poche.
+    </div>
+
+    <!-- EXAM 1 -->
+    <div class="exam-card">
+      <h3>① 2020-2021 — ISIL B — Exercice 3</h3>
+      <div class="meta"><span class="pts">8 points</span><span>Décodage IP /20 & /26</span><span>Même réseau ?</span><span>Tables de routage</span></div>
+      <p><b>📄 La question (sujet original, corrigé en rouge) :</b></p>
+      <img class="examshot" src="annales-img/2020isil_p2.png" alt="Sujet 2020 ISIL Exercice 3" loading="lazy">
+      <a class="pdf-link" href="R%C3%89SEAUX%20exams/2020%20-%202021/ISIL/Sujet%20ISIL%20B%20%2B%20corrig%C3%A9_.pdf" target="_blank">📎 Ouvrir le PDF original</a>
+
+      <details open class="solution"><summary>✅ Solution expliquée pas-à-pas</summary><div class="inner">
+        <h4>Q1 — Tableau pour 172.20.17.66 /20</h4>
+        <ul>
+          <li><b>Masque /20</b> : 20 bits à 1 = 8 + 8 + 4 → le 3ᵉ octet = <code>11110000</code> = <b>240</b>. Donc masque = <b>255.255.240.0</b>.</li>
+          <li><b>Octet coupé</b> = le 3ᵉ (celui à 240). <b>Bloc = 256 − 240 = 16</b>.</li>
+          <li>3ᵉ octet de l'IP = 17 → arrondi au multiple de 16 inférieur = <b>16</b>.</li>
+          <li><b>@réseau = 172.20.16.0</b></li>
+          <li><b>1ʳᵉ @hôte = 172.20.16.1</b> (= @réseau + 1)</li>
+          <li><b>Broadcast = 172.20.31.255</b> (16 + 16 − 1 = 31 dans le 3ᵉ octet, puis 255)</li>
+          <li><b>Dernière @hôte = 172.20.31.254</b> (= broadcast − 1)</li>
+        </ul>
+        <h4>Q2 — 200.200.200.130 /26 : quelles IP sont dans le même réseau ?</h4>
+        <ul>
+          <li>/26 = 255.255.255.<b>192</b>. <b>Bloc = 256 − 192 = 64</b>. Les réseaux : .0–.63, .64–.127, <b>.128–.191</b>, .192–.255.</li>
+          <li>130 tombe dans le bloc <b>.128 → .191</b> (@réseau .128, broadcast .191).</li>
+          <li>Donc dans le même réseau : <b>200.200.200.190</b> et <b>200.200.200.191</b> (✓ entre 128 et 191). Pas <b>.195</b> ni <b>.200</b> (ils sont dans le bloc .192–.255). → réponse cochée : <b>200.200.200.191</b>.</li>
+        </ul>
+        <h4>Q3 — Tables de routage de R1 et R2</h4>
+        <p>R1 a 3 interfaces (réseaux 140.27.0.0, 140.26.0.0, 140.25.0.0) ; R2 en a 2 (140.25.0.0 partagé avec R1, et 141.25.0.0). « C » = réseau directement connecté.</p>
+        <div class="grid2">
+          <div><b>R1</b>
+          <table class="mono"><tr><th>@Rx dest</th><th>Prochain saut</th><th>Sortie</th></tr>
+          <tr><td>140.27.0.0</td><td>C</td><td>140.27.10.12</td></tr>
+          <tr><td>140.26.0.0</td><td>C</td><td>140.26.10.10</td></tr>
+          <tr><td>140.25.0.0</td><td>C</td><td>140.25.10.12</td></tr>
+          <tr><td>141.25.0.0</td><td>140.25.6.66</td><td>140.25.10.12</td></tr></table></div>
+          <div><b>R2</b>
+          <table class="mono"><tr><th>@Rx dest</th><th>Prochain saut</th><th>Sortie</th></tr>
+          <tr><td>141.25.0.0</td><td>C</td><td>141.25.6.66</td></tr>
+          <tr><td>140.25.0.0</td><td>C</td><td>140.25.6.66</td></tr>
+          <tr><td>140.27.0.0</td><td>140.25.10.12</td><td>140.25.6.66</td></tr>
+          <tr><td>140.26.0.0</td><td>140.25.10.12</td><td>140.25.6.66</td></tr></table></div>
+        </div>
+        <p><b>Logique :</b> chaque routeur atteint <b>directement (C)</b> les réseaux branchés sur ses interfaces ; pour les réseaux « de l'autre côté », il envoie au <b>routeur voisin</b> via le réseau partagé 140.25.0.0.</p>
+      </div></details>
+    </div>
+
+    <!-- EXAM 2 -->
+    <div class="exam-card">
+      <h3>② 2017-2018 — ACAD — Exercice 3</h3>
+      <div class="meta"><span class="pts">7 points</span><span>Plan d'adressage (1 classe C)</span><span>Interconnexion</span><span>Tables de routage</span></div>
+      <p><b>📄 La question (sujet original) — l'énoncé est en bas de la page 1 :</b></p>
+      <img class="examshot" src="annales-img/2017_p1.png" alt="Sujet 2017 page 1" loading="lazy">
+      <img class="examshot" src="annales-img/2017_p2.png" alt="Sujet 2017 page 2" loading="lazy">
+      <a class="pdf-link" href="R%C3%89SEAUX%20exams/2017%20-%202018/Sujet.pdf" target="_blank">📎 Sujet PDF</a>
+      <a class="pdf-link" href="R%C3%89SEAUX%20exams/2017%20-%202018/Corrig%C3%A9.pdf" target="_blank">📎 Corrigé officiel PDF</a>
+
+      <details open class="solution"><summary>✅ Solution expliquée pas-à-pas</summary><div class="inner">
+        <p><b>Énoncé :</b> 5 réseaux physiques (10Base5, 100BaseTX, 10Base2, 100BaseFX, FDDI), ~30 machines chacun, reliés par 3 routeurs ; on veut <b>une seule adresse réseau</b> pour tout le site.</p>
+        <h4>Étape 1 — Compter les réseaux à adresser</h4>
+        <p>5 LANs <b>+ 1 liaison point-à-point</b> R1–R3 (la liaison série entre 2 routeurs = un réseau à part entière, à ne pas oublier !) = <b>6 réseaux</b>.</p>
+        <h4>Étape 2 — Bits de sous-réseau</h4>
+        <p>Il faut 2^s ≥ 6 → 2³ = 8 ≥ 6 → <b>s = 3 bits</b> empruntés.</p>
+        <h4>Étape 3 — Vérifier la taille</h4>
+        <p>Une classe C a 8 bits hôte. On en emprunte 3 → reste <b>5 bits hôte</b> → 2⁵ − 2 = <b>30 machines</b> par réseau (≈30 demandé ✓). Une seule classe C suffit donc.</p>
+        <h4>Étape 4 — Masque & plages</h4>
+        <p>Adresse : <b>193.168.1.0</b>, masque <b>/27 = 255.255.255.224</b> (bloc = 256 − 224 = 32). On découpe en blocs de 32 :</p>
+        <table class="mono">
+          <tr><th>Réseau</th><th>Plage</th><th>@ interface routeur (1ʳᵉ utile)</th></tr>
+          <tr><td>10 Base 5</td><td>193.168.1.32 → .63</td><td>R1 : .33</td></tr>
+          <tr><td>100 Base TX</td><td>193.168.1.64 → .95</td><td>R1 : .65 / R2 : .66</td></tr>
+          <tr><td>10 Base 2</td><td>193.168.1.96 → .127</td><td>R2 : .97</td></tr>
+          <tr><td>100 Base FX</td><td>193.168.1.128 → .159</td><td>R2 : .129</td></tr>
+          <tr><td>FDDI</td><td>193.168.1.160 → .191</td><td>R3 : .161</td></tr>
+          <tr><td>Liaison R1–R3</td><td>193.168.1.192 → .223</td><td>R1 : .193 / R3 : .194</td></tr>
+        </table>
+        <p><span style="color:var(--trap)">À noter :</span> le corrigé commence au sous-réseau <b>.32</b> (le tout premier bloc .0–.31 est laissé de côté, prudence classique). Les passerelles prennent la <b>1ʳᵉ adresse</b> de chaque plage.</p>
+        <h4>Étape 5 — Tables de routage</h4>
+        <p>Principe identique à l'exercice 1 : chaque routeur connaît en <b>direct</b> les réseaux branchés sur ses ports, et atteint les autres via le routeur voisin sur le chemin. Extrait (destination → interface de sortie) :</p>
+        <table class="mono">
+          <tr><th>Destination</th><th>via R1</th><th>via R2</th><th>via R3</th></tr>
+          <tr><td>10 Base 5 (.32)</td><td>.33 (C)</td><td>.65</td><td>.193</td></tr>
+          <tr><td>100 Base TX (.64)</td><td>.65 (C)</td><td>.66 (C)</td><td>.193</td></tr>
+          <tr><td>10 Base 2 (.96)</td><td>.66</td><td>.97 (C)</td><td>.193</td></tr>
+          <tr><td>100 Base FX (.128)</td><td>.66</td><td>.129 (C)</td><td>.193</td></tr>
+          <tr><td>FDDI (.160)</td><td>.194</td><td>.65</td><td>.161 (C)</td></tr>
+        </table>
+      </div></details>
+    </div>
+
+    <!-- EXAM 3 -->
+    <div class="exam-card">
+      <h3>③ 2022-2023 — ISIL B — Exercice 4 (Q4 & Q5)</h3>
+      <div class="meta"><span class="pts">8 points</span><span>Hôtes valides</span><span>Broadcast</span><span>Multicast</span><span>Routage & panne</span></div>
+      <p><b>📄 La question (sujet original, corrigé en rouge) :</b></p>
+      <img class="examshot" src="annales-img/2022isil_p4.png" alt="Sujet 2022 ISIL Exercice 4 page 1" loading="lazy">
+      <img class="examshot" src="annales-img/2022isil_p5.png" alt="Sujet 2022 ISIL Exercice 4 page 2" loading="lazy">
+      <a class="pdf-link" href="R%C3%89SEAUX%20exams/2022%20-%202023/ISIL/Corrig%C3%A9.pdf" target="_blank">📎 Ouvrir le corrigé PDF</a>
+
+      <details open class="solution"><summary>✅ Solution expliquée pas-à-pas</summary><div class="inner">
+        <h4>Q5 — LAN1 = 180.180.160.0 /20</h4>
+        <ul>
+          <li>/20 = 255.255.<b>240</b>.0 → <b>bloc = 16</b> (3ᵉ octet). 160 est déjà un multiple de 16 → <b>@réseau = 180.180.160.0</b>.</li>
+          <li><b>Broadcast = 180.180.175.255</b> (160 + 16 − 1 = 175, puis 255). → <b>réponse Q5.b</b>.</li>
+          <li>Plage des hôtes valides : <b>180.180.160.1 → 180.180.175.254</b>.</li>
+        </ul>
+        <p><b>Q5.a — Hôtes valides</b> = dans la plage <u>et</u> différents du broadcast :</p>
+        <table class="mono">
+          <tr><th>Adresse</th><th>Valide ?</th><th>Pourquoi</th></tr>
+          <tr><td>180.180.166.255</td><td>✅ oui</td><td>dans [160 ; 175], et ≠ broadcast</td></tr>
+          <tr><td>180.180.170.0</td><td>✅ oui</td><td>dans la plage</td></tr>
+          <tr><td>180.180.161.0</td><td>✅ oui</td><td>dans la plage</td></tr>
+          <tr><td>180.180.160.255</td><td>✅ oui</td><td>dans la plage</td></tr>
+          <tr><td>180.180.175.250</td><td>✅ oui</td><td>dans la plage (juste avant le broadcast)</td></tr>
+          <tr><td>180.180.180.254</td><td>❌ non</td><td>180 &gt; 175 → autre réseau</td></tr>
+          <tr><td>180.180.150.150</td><td>❌ non</td><td>150 &lt; 160 → autre réseau</td></tr>
+          <tr><td>180.180.190.25</td><td>❌ non</td><td>190 &gt; 175 → autre réseau</td></tr>
+        </table>
+        <p><b>Q5.c — Tâche de contrôle commune</b> → groupe de machines = adresse <b>multicast (classe D)</b>, ex. <b>224.0.0.1</b>.</p>
+        <h4>Q4 — Panne de LAN3 (lien vers le routeur down), tables inchangées</h4>
+        <ul>
+          <li><b>a) Communiquer entre eux ?</b> → <b>non</b> : la connexion du LAN au routeur est tombée (le LAN est isolé).</li>
+          <li><b>b) Communiquer avec LAN2 ?</b> → <b>non</b> : il n'existe plus de chemin (le lien est coupé et personne n'a mis à jour les tables).</li>
+        </ul>
+        <h4>Q1–Q3 (rappel méthode)</h4>
+        <p>Q1 : remplir les tables de routage des 4 routeurs (R0–R3) au plus court (pas de route par défaut). Q3 : avec <b>192.168.10.0/25</b> → /25 = 255.255.255.<b>128</b> → 2 sous-réseaux (.0–.127 et .128–.255), 2⁷ − 2 = <b>126 machines</b> chacun. Même méthode que l'exercice 2017.</p>
+      </div></details>
+    </div>
+
+    <div class="box simple"><div class="bt">💡 Conseil d'entraînement</div>
+      Cache ma solution (referme la flèche ▸), <b>fais l'exercice toi-même sur papier</b> à partir de l'image, puis compare. C'est en faisant à la main que ça rentre. Vise : les 3 exercices en ~1h, comme à l'examen.</div>
+  </section>
+
   <!-- ============ RECETTES ============ -->
   <section id="recettes" class="chap">
     <h2><span class="num">🍳</span> Recettes d'exercices (anti-panique)</h2>
@@ -1230,6 +1385,18 @@
   }
   document.addEventListener('scroll',onScroll,{passive:true});
   window.addEventListener('load',onScroll);
+
+  // click-to-zoom lightbox for exam images
+  const ov=document.createElement('div');
+  ov.style.cssText='position:fixed;inset:0;background:rgba(10,12,30,.92);display:none;'+
+    'align-items:flex-start;justify-content:center;z-index:1000;overflow:auto;padding:20px;cursor:zoom-out';
+  ov.innerHTML='<img style="max-width:100%;height:auto;border-radius:8px">';
+  document.body.appendChild(ov);
+  const ovImg=ov.firstChild;
+  document.querySelectorAll('.examshot').forEach(im=>{
+    im.addEventListener('click',()=>{ovImg.src=im.src;ov.style.display='flex';});
+  });
+  ov.addEventListener('click',()=>{ov.style.display='none';});
 </script>
 </body>
 </html>
