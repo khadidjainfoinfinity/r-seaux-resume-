@@ -1,0 +1,1235 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Réseaux — Le cours complet pour tout comprendre (et réussir l'examen)</title>
+<style>
+  :root{
+    --bg:#0f1226; --bg2:#151a3a; --panel:#ffffff; --ink:#1c2333; --soft:#5a6478;
+    --line:#e6e9f2; --brand:#4f6bff; --brand2:#7a5cff; --accent:#00c2a8;
+    --exam:#ff4d6d; --exam-bg:#fff0f3; --exam-line:#ffd0da;
+    --simple:#0aa37f; --simple-bg:#eafaf4; --simple-line:#bfead9;
+    --formula:#5b3df5; --formula-bg:#f1eeff; --formula-line:#ddd5ff;
+    --ex:#0b7fd4; --ex-bg:#ecf6ff; --ex-line:#c9e4fb;
+    --trap:#e8820c; --trap-bg:#fff6e9; --trap-line:#ffe2bd;
+    --skip:#7a8194; --skip-bg:#f3f4f7; --skip-line:#e2e5ec;
+    --radius:16px; --shadow:0 8px 30px rgba(20,26,60,.08);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;font-family:'Segoe UI',Roboto,system-ui,-apple-system,sans-serif;
+    color:var(--ink);background:#f5f6fb;line-height:1.65;font-size:16.5px}
+  a{color:var(--brand);text-decoration:none}
+  /* ===== Progress bar ===== */
+  #progress{position:fixed;top:0;left:0;height:4px;width:0;z-index:999;
+    background:linear-gradient(90deg,var(--brand),var(--brand2),var(--accent))}
+  /* ===== Layout ===== */
+  .wrap{display:flex;max-width:1500px;margin:0 auto}
+  /* Sidebar */
+  nav#toc{position:sticky;top:0;align-self:flex-start;height:100vh;overflow-y:auto;
+    width:310px;flex:0 0 310px;background:linear-gradient(180deg,var(--bg),var(--bg2));
+    color:#cfd6f5;padding:22px 16px 60px;font-size:14.5px}
+  nav#toc .brand{font-weight:800;font-size:18px;color:#fff;letter-spacing:.3px;line-height:1.3;margin-bottom:4px}
+  nav#toc .brand span{color:var(--accent)}
+  nav#toc .sub{color:#8b95c9;font-size:12.5px;margin-bottom:18px}
+  nav#toc a{display:block;color:#c2cbf0;padding:7px 12px;border-radius:9px;margin:2px 0;
+    border-left:3px solid transparent;transition:.15s}
+  nav#toc a:hover{background:rgba(255,255,255,.06);color:#fff}
+  nav#toc a.active{background:rgba(79,107,255,.22);color:#fff;border-left-color:var(--accent)}
+  nav#toc .grp{margin:16px 0 4px;font-size:11px;text-transform:uppercase;letter-spacing:1.5px;color:#6f79b0}
+  nav#toc a .tag{float:right;font-size:10px;padding:1px 7px;border-radius:20px;font-weight:700}
+  .tag.hot{background:var(--exam);color:#fff}
+  .tag.mid{background:#ffb020;color:#3a2600}
+  .tag.low{background:rgba(255,255,255,.12);color:#aab2d8}
+  /* Main */
+  main{flex:1;min-width:0;padding:0 0 120px}
+  .hero{background:linear-gradient(135deg,var(--bg),#23306e 60%,var(--brand2));
+    color:#fff;padding:54px 48px 46px;border-bottom-left-radius:34px;border-bottom-right-radius:0}
+  .hero h1{margin:0 0 10px;font-size:38px;line-height:1.12;letter-spacing:-.5px}
+  .hero p{margin:0;color:#d7deff;font-size:17px;max-width:760px}
+  .hero .pills{margin-top:22px;display:flex;gap:10px;flex-wrap:wrap}
+  .hero .pill{background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.18);
+    padding:7px 14px;border-radius:30px;font-size:13.5px}
+  .content{padding:10px 48px}
+  section{background:var(--panel);border-radius:var(--radius);box-shadow:var(--shadow);
+    padding:30px 34px;margin:26px 0;scroll-margin-top:18px}
+  section.chap{border-top:5px solid var(--brand)}
+  h2{font-size:27px;margin:.2em 0 .5em;letter-spacing:-.3px;display:flex;align-items:center;gap:12px}
+  h2 .num{flex:0 0 auto;width:42px;height:42px;border-radius:12px;display:grid;place-items:center;
+    background:linear-gradient(135deg,var(--brand),var(--brand2));color:#fff;font-size:19px;font-weight:800}
+  h3{font-size:20px;margin:1.4em 0 .4em;color:#23306e;border-bottom:2px solid var(--line);padding-bottom:6px}
+  h4{font-size:16.5px;margin:1.1em 0 .3em;color:#2c3550}
+  p{margin:.5em 0}
+  ul,ol{margin:.4em 0 .8em;padding-left:22px}
+  li{margin:.28em 0}
+  code{background:#eef0f7;padding:1.5px 6px;border-radius:6px;font-family:'Consolas',monospace;font-size:14px;color:#3a2c8f}
+  b,strong{color:#161d33}
+  .lead{font-size:17.5px;color:var(--soft)}
+  /* Callout boxes */
+  .box{border-radius:14px;padding:15px 18px 15px 16px;margin:16px 0;border:1px solid;position:relative}
+  .box .bt{font-weight:800;font-size:13px;letter-spacing:.5px;text-transform:uppercase;
+    display:flex;align-items:center;gap:8px;margin-bottom:6px}
+  .box p:last-child,.box ul:last-child,.box ol:last-child{margin-bottom:0}
+  .exam{background:var(--exam-bg);border-color:var(--exam-line)}
+  .exam .bt{color:var(--exam)}
+  .simple{background:var(--simple-bg);border-color:var(--simple-line)}
+  .simple .bt{color:var(--simple)}
+  .formula{background:var(--formula-bg);border-color:var(--formula-line)}
+  .formula .bt{color:var(--formula)}
+  .formula .eq{font-family:'Cambria Math','Consolas',serif;font-size:18px;text-align:center;
+    background:#fff;border:1px dashed var(--formula-line);border-radius:10px;padding:10px;margin:8px 0;color:#241a6b}
+  .worked{background:var(--ex-bg);border-color:var(--ex-line)}
+  .worked .bt{color:var(--ex)}
+  .trap{background:var(--trap-bg);border-color:var(--trap-line)}
+  .trap .bt{color:var(--trap)}
+  .skip{background:var(--skip-bg);border-color:var(--skip-line)}
+  .skip .bt{color:var(--skip)}
+  /* Tables */
+  table{border-collapse:collapse;width:100%;margin:14px 0;font-size:14.5px;overflow:hidden;border-radius:12px}
+  th,td{border:1px solid var(--line);padding:9px 11px;text-align:left;vertical-align:top}
+  th{background:#2a3470;color:#fff;font-weight:600}
+  tr:nth-child(even) td{background:#f7f8fc}
+  .mono td,.mono th{font-family:'Consolas',monospace}
+  /* Frequency meter */
+  .freq{display:inline-block;width:120px;height:11px;border-radius:8px;background:#eceffa;overflow:hidden;vertical-align:middle}
+  .freq i{display:block;height:100%;border-radius:8px;background:linear-gradient(90deg,var(--exam),var(--brand2))}
+  /* Collapsible */
+  details{border:1px solid var(--line);border-radius:12px;margin:12px 0;overflow:hidden;background:#fff}
+  details summary{cursor:pointer;padding:13px 16px;font-weight:700;background:#f7f8fc;list-style:none;
+    display:flex;align-items:center;gap:10px}
+  details summary::-webkit-details-marker{display:none}
+  details summary::before{content:"▸";color:var(--brand);font-size:18px;transition:.2s}
+  details[open] summary::before{transform:rotate(90deg)}
+  details .inner{padding:6px 18px 16px}
+  details.solution summary{background:#eafaf4;color:var(--simple)}
+  /* misc */
+  .kbd{background:#fff;border:1px solid #d4d9e8;border-bottom-width:2px;border-radius:6px;padding:1px 7px;font-size:13px;font-family:monospace}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .card{border:1px solid var(--line);border-radius:13px;padding:14px 16px;background:#fcfcff}
+  .card h4{margin-top:.2em}
+  .pro,.con{padding-left:4px}
+  .pro li{list-style:none;position:relative;padding-left:24px}
+  .pro li::before{content:"✓";position:absolute;left:0;color:var(--simple);font-weight:800}
+  .con li{list-style:none;position:relative;padding-left:24px}
+  .con li::before{content:"✕";position:absolute;left:0;color:var(--exam);font-weight:800}
+  .bits{font-family:'Consolas',monospace;letter-spacing:1px;background:#0f1226;color:#aef5e4;
+    padding:10px 14px;border-radius:10px;display:inline-block;margin:6px 0;font-size:15px}
+  .tip-inline{background:#fff7d6;padding:1px 6px;border-radius:5px}
+  hr{border:none;border-top:1px dashed var(--line);margin:26px 0}
+  .footer{text-align:center;color:var(--soft);padding:40px;font-size:13.5px}
+  @media(max-width:980px){
+    nav#toc{display:none}
+    .hero{padding:36px 22px}.hero h1{font-size:28px}.content{padding:6px 16px}
+    section{padding:22px 18px}.grid2{grid-template-columns:1fr}
+  }
+  @media print{nav#toc,#progress{display:none}section{box-shadow:none;break-inside:avoid}}
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<div class="wrap">
+
+<nav id="toc">
+  <div class="brand">RÉSEAUX <span>·</span> Le cours qui<br>te fait réussir</div>
+  <div class="sub">De zéro à l'examen — tout est ici 🎯</div>
+  <a href="#start">🚀 Par où commencer</a>
+  <a href="#strategie">🧠 Stratégie d'examen <span class="tag hot">LIS-MOI</span></a>
+
+  <div class="grp">Les bases</div>
+  <a href="#c1">1 · C'est quoi un réseau ? <span class="tag mid">moy</span></a>
+  <a href="#c2">2 · Couche Physique <span class="tag mid">moy</span></a>
+  <a href="#c3">3 · Codage & Modulation <span class="tag hot">chaud</span></a>
+  <a href="#c4">4 · Multiplexage <span class="tag hot">chaud</span></a>
+
+  <div class="grp">Fiabiliser les données</div>
+  <a href="#c5">5 · Détection d'erreurs <span class="tag hot">chaud</span></a>
+  <a href="#c6">6 · Couche Liaison & HDLC <span class="tag mid">moy</span></a>
+  <a href="#c7">7 · Accès au support (MAC) <span class="tag mid">moy</span></a>
+
+  <div class="grp">Faire voyager les paquets</div>
+  <a href="#c8">8 · Couche Réseau & Routage <span class="tag hot">chaud</span></a>
+  <a href="#c9">9 · Adressage IP & sous-réseaux <span class="tag hot">★ROI★</span></a>
+  <a href="#c10">10 · Datagramme IP & Fragmentation <span class="tag hot">chaud</span></a>
+  <a href="#c11">11 · ARP, ICMP, TCP, UDP <span class="tag mid">moy</span></a>
+
+  <div class="grp">Pour cartonner</div>
+  <a href="#recettes">🍳 Recettes d'exercices</a>
+  <a href="#annales">📜 Annales décortiquées</a>
+  <a href="#flashcards">🃏 Révision express</a>
+  <a href="#checklist">✅ Checklist finale</a>
+</nav>
+
+<main>
+  <div class="hero" id="start">
+    <h1>Réseaux : le cours complet,<br>expliqué comme à un débutant total</h1>
+    <p>Tu n'as rien étudié ? Parfait, on part de zéro. Ce document t'explique <b>tout le module</b> avec des mots simples et des images mentales, <b>puis</b> il te dit exactement <b>ce qui tombe à l'examen</b> et <b>ce que tu peux ignorer</b>. Tout est basé sur ton cours + <b>7 années d'examens corrigés (2017→2024)</b>.</p>
+    <div class="pills">
+      <span class="pill">⏱️ Examen type : 1h30, 3–4 exercices</span>
+      <span class="pill">🎯 Boîtes rouges = ça tombe vraiment</span>
+      <span class="pill">✏️ Exemples résolus pas-à-pas</span>
+      <span class="pill">🇫🇷 Vocabulaire exact de l'examen</span>
+    </div>
+  </div>
+
+  <div class="content">
+
+  <!-- ============ COMMENT LIRE ============ -->
+  <section>
+    <h2>📖 Comment utiliser ce document</h2>
+    <p class="lead">Lis dans l'ordre, mais repère surtout les couleurs. Chaque encadré a un rôle :</p>
+    <div class="box exam"><div class="bt">🎯 Ça tombe à l'examen</div>Le truc précis qui revient dans les sujets. Si tu manques de temps, apprends <b>au moins</b> ça.</div>
+    <div class="box simple"><div class="bt">💡 En clair</div>L'explication ultra-simple, avec une image de la vie courante. Pour <b>comprendre</b>, pas juste réciter.</div>
+    <div class="box formula"><div class="bt">📐 Formule</div>La formule à connaître par cœur, avec ce que veut dire chaque lettre.</div>
+    <div class="box worked"><div class="bt">✏️ Exemple résolu</div>Un exercice fait du début à la fin, comme à l'examen.</div>
+    <div class="box trap"><div class="bt">⚠️ Piège classique</div>L'erreur que tout le monde fait et qui coûte des points.</div>
+    <div class="box skip"><div class="bt">⏭️ Tu peux survoler</div>Présent dans le cours mais quasi jamais à l'examen. À lire en diagonale si tu es pressé.</div>
+  </section>
+
+  <!-- ============ STRATEGIE ============ -->
+  <section id="strategie" class="chap">
+    <h2><span class="num">🧠</span> Stratégie d'examen : sur quoi parier</h2>
+    <p class="lead">J'ai lu <b>tous</b> tes examens de 2017 à 2024 (sections ACAD et ISIL). La bonne nouvelle : <b>l'examen est ultra-répétitif.</b> Presque toujours les <b>3 mêmes gros thèmes</b>. Si tu maîtrises ces trois-là, tu as déjà la moyenne large.</p>
+
+    <div class="box exam">
+      <div class="bt">🎯 Le squelette de presque CHAQUE examen</div>
+      <ol>
+        <li><b>Exercice « signal »</b> = Multiplexage temporel <u>+</u> Modulation (souvent fusionnés en un seul exo).</li>
+        <li><b>Exercice « erreurs »</b> = Détection d'erreurs : soit <b>CRC polynomial</b>, soit <b>parité VRC/LRC</b>, soit <b>distance de Hamming</b>.</li>
+        <li><b>Le GROS exercice</b> (le plus de points) = <b>Adressage IP + sous-réseaux + Tables de routage + Interconnexion</b> (et très souvent <b>Fragmentation IP</b>).</li>
+        <li><i>Bonus selon l'année :</i> HDLC, lecture d'un datagramme IP / en-tête TCP, QCM de cours, calcul de débit (Nyquist/Shannon), temps de transfert (satellite).</li>
+      </ol>
+    </div>
+
+    <h3>Le tableau de fréquence (ce qui revient le plus)</h3>
+    <p>« Fréquence » = dans combien d'examens sur les ~12 sujets analysés ce thème apparaît. Plus la barre est longue, plus c'est sûr que ça tombe.</p>
+    <table>
+      <tr><th>Thème</th><th>Fréquence</th><th>Priorité</th><th>Où l'apprendre</th></tr>
+      <tr><td><b>Adressage IP & sous-réseaux</b> (masque, @réseau, broadcast, plan d'adressage)</td><td><span class="freq"><i style="width:100%"></i></span></td><td>🔴 INDISPENSABLE</td><td><a href="#c9">Chap. 9</a></td></tr>
+      <tr><td><b>Multiplexage temporel</b> (Rmux, quantum, scrutations, extraire messages)</td><td><span class="freq"><i style="width:95%"></i></span></td><td>🔴 INDISPENSABLE</td><td><a href="#c4">Chap. 4</a></td></tr>
+      <tr><td><b>Modulation</b> ASK/FSK/PSK (valence V, n=log₂V, lire un signal)</td><td><span class="freq"><i style="width:92%"></i></span></td><td>🔴 INDISPENSABLE</td><td><a href="#c3">Chap. 3</a></td></tr>
+      <tr><td><b>Tables de routage</b> (destination → prochain saut / interface)</td><td><span class="freq"><i style="width:85%"></i></span></td><td>🔴 INDISPENSABLE</td><td><a href="#c8">Chap. 8</a></td></tr>
+      <tr><td><b>Fragmentation IP</b> (MTU, ID, Offset, drapeau MF)</td><td><span class="freq"><i style="width:78%"></i></span></td><td>🔴 TRÈS PROBABLE</td><td><a href="#c10">Chap. 10</a></td></tr>
+      <tr><td><b>Interconnexion</b> & équipements (routeur/pont/hub, normes Ethernet)</td><td><span class="freq"><i style="width:75%"></i></span></td><td>🟠 PROBABLE</td><td><a href="#c1">Ch.1</a> + <a href="#c7">Ch.7</a></td></tr>
+      <tr><td><b>CRC / code polynomial</b> (G(x), C(n,k), circuit)</td><td><span class="freq"><i style="width:62%"></i></span></td><td>🟠 PROBABLE</td><td><a href="#c5">Chap. 5</a></td></tr>
+      <tr><td><b>VRC / LRC (double parité)</b></td><td><span class="freq"><i style="width:50%"></i></span></td><td>🟠 PROBABLE</td><td><a href="#c5">Chap. 5</a></td></tr>
+      <tr><td><b>Codage en ligne</b> (Manchester, NRZ, RZ…)</td><td><span class="freq"><i style="width:42%"></i></span></td><td>🟡 POSSIBLE</td><td><a href="#c3">Chap. 3</a></td></tr>
+      <tr><td><b>HDLC</b> (trames I/S/U, REJ/SREJ, diagramme d'échange)</td><td><span class="freq"><i style="width:40%"></i></span></td><td>🟡 POSSIBLE</td><td><a href="#c6">Chap. 6</a></td></tr>
+      <tr><td><b>Lecture datagramme IP + en-tête TCP</b></td><td><span class="freq"><i style="width:38%"></i></span></td><td>🟡 POSSIBLE</td><td><a href="#c10">Ch.10</a>+<a href="#c11">Ch.11</a></td></tr>
+      <tr><td><b>QCM / définitions de cours</b> (TCP vs UDP, OSI, CSMA/CD…)</td><td><span class="freq"><i style="width:38%"></i></span></td><td>🟡 POSSIBLE</td><td>partout</td></tr>
+      <tr><td><b>Débit Nyquist/Shannon</b>, temps de transfert</td><td><span class="freq"><i style="width:33%"></i></span></td><td>🟡 POSSIBLE</td><td><a href="#c2">Chap. 2</a></td></tr>
+      <tr><td><b>Distance de Hamming</b></td><td><span class="freq"><i style="width:25%"></i></span></td><td>🟢 BONUS</td><td><a href="#c5">Chap. 5</a></td></tr>
+    </table>
+
+    <div class="grid2">
+      <div class="box simple" style="margin:6px 0">
+        <div class="bt">✅ Apprends ça en PRIORITÉ</div>
+        <ul>
+          <li><b>Le sous-réseautage</b> (calcul de masque, @réseau, broadcast, nb d'hôtes, plan d'adressage). C'est le ROI de l'examen, le plus gros paquet de points.</li>
+          <li><b>Multiplexage temporel + modulation</b> : sache calculer Rmux, le quantum, et extraire les messages de chaque ligne.</li>
+          <li><b>Fragmentation IP</b> : la recette ID / Offset / MF.</li>
+          <li><b>Tables de routage</b> : remplir un tableau destination→sortie.</li>
+          <li><b>CRC polynomial</b> : la division pour trouver le reste A(x).</li>
+        </ul>
+      </div>
+      <div class="box skip" style="margin:6px 0">
+        <div class="bt">⏭️ Tu peux survoler / ignorer</div>
+        <ul>
+          <li><b>Les maths de Fourier</b> (séries/transformées) dans les slides de couche physique — jamais demandé en calcul.</li>
+          <li><b>Détails des champs X.25</b> (bits Q, D, NVL, NGVL…) — culture, pas d'exo.</li>
+          <li><b>Le code des algos</b> (Send&Wait, backoff en C) — comprends le principe, pas le code ligne à ligne.</li>
+          <li><b>Le détail des algorithmes de routage</b> (link-state vs distance-vector interne, Dijkstra) — connais juste les noms et l'idée.</li>
+          <li><b>Le codage BHDn, Miller, bipolaire entrelacé</b> — rare ; concentre-toi sur Manchester/NRZ.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="box trap">
+      <div class="bt">⚠️ Règle d'or de l'examen</div>
+      <b>« Toute réponse non justifiée n'est pas comptée. »</b> Cette phrase est écrite sur presque tous les sujets. Donc : à chaque réponse, écris <i>pourquoi</i> (la formule utilisée, le calcul, la règle). Une bonne réponse sans justification = 0.
+    </div>
+
+    <div class="box exam">
+      <div class="bt">🎯 Plan d'attaque le jour J (1h30)</div>
+      <ol>
+        <li><b>5 min :</b> lis tout le sujet, repère le gros exo d'adressage IP (commence par lui si tu es à l'aise : le plus de points).</li>
+        <li>Fais d'abord les exos que tu <b>maîtrises</b> (souvent : sous-réseaux, multiplexage).</li>
+        <li>Justifie chaque réponse (formule + calcul).</li>
+        <li>Pour le multiplexage/modulation : <b>dessine</b> proprement les signaux, l'examinateur adore.</li>
+        <li>Garde 5 min pour vérifier les calculs de masques et d'offsets (sources d'erreurs bêtes).</li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ============ CHAP 1 ============ -->
+  <section id="c1" class="chap">
+    <h2><span class="num">1</span> C'est quoi un réseau ? (le vocabulaire de base)</h2>
+    <p class="lead">Avant de calculer quoi que ce soit, il faut connaître les mots. L'examen adore les petites questions de cours et les QCM sur ce chapitre.</p>
+
+    <div class="box simple"><div class="bt">💡 En clair</div>
+      Un <b>réseau informatique</b> = plusieurs machines reliées entre elles qui <b>s'échangent des données</b> (des 0 et des 1). Comme un groupe d'amis qui se passent des mots en classe : il faut un <i>chemin</i> (le câble/wifi), un <i>langage commun</i> (le protocole), et une <i>adresse</i> pour savoir à qui c'est destiné.</div>
+
+    <p><b>Pourquoi des réseaux ?</b> Partager des infos, éviter de dupliquer les données, partager le matériel (imprimantes, disques), et communiquer/collaborer.</p>
+
+    <h3>1.1 Classer les réseaux (4 critères)</h3>
+    <table>
+      <tr><th>Critère</th><th>Les valeurs à connaître</th></tr>
+      <tr><td><b>Taille</b></td><td><b>LAN</b> (local, 10 m → 1 km, le plus courant) · <b>MAN</b> (ville, 10 → 100 km) · <b>WAN</b> (pays/continent, 100 → 1000 km)</td></tr>
+      <tr><td><b>Type</b></td><td><b>Client-serveur</b> (un serveur puissant sert des clients) · <b>Poste à poste / Peer-to-Peer</b> (tout le monde sur un pied d'égalité)</td></tr>
+      <tr><td><b>Topologie</b></td><td>Bus · Étoile · Anneau (voir Chap. 7)</td></tr>
+      <tr><td><b>Support</b></td><td>Filaire (câble) ou Sans fil (Bluetooth, Wi-Fi, satellite)</td></tr>
+    </table>
+    <div class="box trap"><div class="bt">⚠️ Piège</div>Retiens bien les <b>distances</b> LAN/MAN/WAN, ça tombe en QCM. Astuce : <b>L</b>AN = <b>L</b>ocal (petit), <b>W</b>AN = <b>W</b>ide (le monde).</div>
+
+    <h3>1.2 Le modèle OSI (les 7 couches) <span style="font-size:13px;color:var(--exam)">🎯 à connaître par cœur</span></h3>
+    <div class="box simple"><div class="bt">💡 En clair</div>
+      OSI découpe la communication en <b>7 étages</b>. Chaque étage rend un service à l'étage du dessus. Comme envoyer un colis : toi (application) → emballage → étiquette d'adresse → camion → route. Chaque couche ajoute son « emballage ».</div>
+    <table>
+      <tr><th>#</th><th>Couche</th><th>Son boulot (en une phrase)</th></tr>
+      <tr><td>7</td><td>Application</td><td>Les programmes de l'utilisateur (mail, web, FTP)</td></tr>
+      <tr><td>6</td><td>Présentation</td><td>Mise en forme/représentation des données (chiffrement, format)</td></tr>
+      <tr><td>5</td><td>Session</td><td>Gère l'ouverture/fermeture des sessions</td></tr>
+      <tr><td>4</td><td><b>Transport</b></td><td>Transfert <b>de bout en bout</b>, fiable et efficace (TCP/UDP)</td></tr>
+      <tr><td>3</td><td><b>Réseau</b></td><td><b>Adressage et routage</b> des paquets à travers le réseau (IP)</td></tr>
+      <tr><td>2</td><td><b>Liaison</b></td><td>Transmission fiable de <b>trames</b>, contrôle d'erreurs et de flux</td></tr>
+      <tr><td>1</td><td><b>Physique</b></td><td>Transmettre les <b>bits</b> sur le câble (signaux)</td></tr>
+    </table>
+    <div class="box exam"><div class="bt">🎯 Ça tombe</div>
+      Moyen mnémotechnique pour l'ordre (1→7) : <b>« Plein Le Réseau Tout Se Permet d'Aboyer »</b> (Physique, Liaison, Réseau, Transport, Session, Présentation, Application). On te demande souvent <b>le rôle d'une couche</b> ou <b>dans quelle couche agit un équipement/protocole</b>.</div>
+
+    <h3>1.3 TCP/IP : le modèle « réel » d'Internet (4 couches)</h3>
+    <p>OSI est la théorie. Internet utilise <b>TCP/IP</b>, plus simple, à <b>4 couches</b> :</p>
+    <table>
+      <tr><th>Couche TCP/IP</th><th>Rôle</th><th>≈ OSI</th></tr>
+      <tr><td><b>Application</b></td><td>telnet, FTP, SMTP, HTTP…</td><td>5+6+7</td></tr>
+      <tr><td><b>Transport</b></td><td>communication de bout en bout (TCP, UDP)</td><td>4</td></tr>
+      <tr><td><b>Internet</b></td><td>routage des paquets (IP, ARP, ICMP)</td><td>3</td></tr>
+      <tr><td><b>Accès réseau</b></td><td>carte réseau + driver (interface physique)</td><td>1+2</td></tr>
+    </table>
+
+    <h3>1.4 Les équipements <span style="font-size:13px;color:var(--exam)">🎯 super important pour l'exo d'interconnexion</span></h3>
+    <p>La question clé de l'examen : <b>« quel équipement utiliser ? »</b> Réponse = ça dépend de <b>la couche</b> où il agit.</p>
+    <table>
+      <tr><th>Équipement</th><th>Couche</th><th>Ce qu'il fait</th></tr>
+      <tr><td><b>Répéteur</b></td><td>1 (physique)</td><td>Amplifie/régénère un signal affaibli (allonge la distance)</td></tr>
+      <tr><td><b>Concentrateur / Hub</b></td><td>1 (physique)</td><td>Répète le signal vers tous les ports (bête, pas de filtrage)</td></tr>
+      <tr><td><b>Pont / Bridge</b></td><td>2 (liaison)</td><td>Relie 2 réseaux, filtre les trames, segmente les collisions</td></tr>
+      <tr><td><b>Commutateur / Switch</b></td><td>2 (liaison)</td><td>Comme un pont multi-ports intelligent ; dirige vers le bon port</td></tr>
+      <tr><td><b>Routeur</b></td><td>3 (réseau)</td><td>Relie des réseaux <b>différents</b>, choisit le meilleur chemin (table de routage), peut fragmenter</td></tr>
+      <tr><td><b>Passerelle / Gateway</b></td><td>les 7 couches</td><td>Traduit entre deux architectures protocolaires différentes</td></tr>
+    </table>
+    <div class="box exam"><div class="bt">🎯 Question piège récurrente</div>
+      « Pour relier deux réseaux qui utilisent des <b>méthodes d'accès différentes</b> (ex : Ethernet 802.3 et Token Ring 802.5), quel équipement ? » → <b>un ROUTEUR</b> (couche 3), car le pont/switch ne sait pas traduire entre deux technologies de couche 2 différentes. (Tombé en 2020 ACAD.)</div>
+    <div class="box simple"><div class="bt">💡 ETTD vs ETCD</div>
+      <b>ETTD</b> = l'équipement qui produit/consomme la donnée (PC, terminal, serveur). <b>ETCD</b> = l'équipement qui adapte la donnée à la ligne (modem, carte réseau). Image : l'ETTD c'est <b>toi qui écris une lettre</b>, l'ETCD c'est <b>la boîte aux lettres + le facteur</b> qui la met sur le réseau.</div>
+
+    <h3>1.5 Modes & commutation</h3>
+    <div class="grid2">
+      <div class="card"><h4>Mode connecté</h4>On établit d'abord une connexion (comme un appel téléphonique : « allô ? » avant de parler), puis on transfère, puis on raccroche. Plus fiable.</div>
+      <div class="card"><h4>Mode non connecté</h4>On envoie les blocs sans prévenir (comme une carte postale). Plus simple, moins de garanties.</div>
+      <div class="card"><h4>Commutation de circuit</h4>Un chemin <b>dédié</b> est réservé toute la durée (téléphone classique). Débit garanti mais gaspille la ligne dans les silences.</div>
+      <div class="card"><h4>Commutation de paquets</h4>Les données sont coupées en <b>paquets</b> qui voyagent indépendamment, chacun pouvant prendre un chemin différent. Flexible et efficace (c'est Internet).</div>
+    </div>
+  </section>
+
+  <!-- ============ CHAP 2 ============ -->
+  <section id="c2" class="chap">
+    <h2><span class="num">2</span> Couche Physique : le signal et le câble</h2>
+    <p class="lead">Ici on parle de la <b>vraie</b> transmission : transformer des 0/1 en signal électrique, lumineux ou radio. Pour l'examen on retient surtout : <b>les formules de débit/temps</b> et les <b>caractéristiques des supports</b>. Les maths de Fourier des slides ? <span class="tip-inline">on saute.</span></p>
+
+    <h3>2.1 Le signal et ses 3 caractéristiques</h3>
+    <p>Une onde se décrit par 3 choses : sa <b>fréquence</b>, son <b>amplitude</b> et sa <b>phase</b>. (Retiens-les : ce sont exactement les 3 choses qu'on fait varier pour <b>moduler</b>, voir Chap. 3.)</p>
+    <div class="box formula"><div class="bt">📐 Formules de base du signal</div>
+      <div class="eq">F = 1 / T</div>
+      F = fréquence (Hertz), T = période (secondes).
+      <div class="eq">y = A · sin(2π·f·t + φ)</div>
+      A = amplitude (force du signal), f = fréquence, φ = phase (décalage).</div>
+
+    <h3>2.2 Les perturbations (ce qui abîme le signal)</h3>
+    <ul>
+      <li><b>Bruit</b> : perturbations qui modifient le signal. Deux types : <b>bruit blanc/gaussien</b> (thermique, faible, partout) et <b>bruit impulsif</b> (court, fort, ex. moteurs).</li>
+      <li><b>Affaiblissement (atténuation)</b> : le signal perd de l'énergie sur la ligne → la sortie est plus faible que l'entrée.</li>
+      <li><b>Distorsion de phase</b> : déphasage entre entrée et sortie (mauvaise synchro).</li>
+      <li><b>Diaphonie</b> : un câble « parasite » son voisin. <b>Écho</b> : réflexion du signal.</li>
+    </ul>
+    <div class="box formula"><div class="bt">📐 Affaiblissement (dB)</div>
+      <div class="eq">A = 10 · log₁₀(P<sub>émis</sub> / P<sub>reçu</sub>)  &nbsp;(décibels)</div></div>
+
+    <h3>2.3 Caractéristiques d'une transmission <span style="font-size:13px;color:var(--exam)">🎯 formules à connaître</span></h3>
+    <div class="box formula"><div class="bt">📐 Les formules reines (à mémoriser ABSOLUMENT)</div>
+      <div class="eq">Valence : V = nombre d'états différents du signal</div>
+      <div class="eq">n = log₂(V)  →  nb de bits par état (par symbole)</div>
+      <div class="eq">Rapidité de modulation : R = 1 / Δ  (en <b>bauds</b>)</div>
+      <div class="eq">Débit binaire : D = n × R = R · log₂(V)  (en <b>bits/s</b>)</div>
+      Δ = durée d'un état (symbole). <b>Baud ≠ bit/s !</b> Un baud peut porter plusieurs bits si V&gt;2.</div>
+    <div class="box simple"><div class="bt">💡 L'image à retenir</div>
+      Un <b>baud</b> c'est un « coup » envoyé sur la ligne (un symbole). Si chaque coup ne peut dire que 0 ou 1 (V=2), alors 1 baud = 1 bit. Mais si un coup peut prendre 4 formes différentes (V=4), il transporte 2 bits → le débit double sans envoyer plus de coups ! C'est <b>tout l'intérêt</b> de la modulation.</div>
+
+    <div class="box formula"><div class="bt">📐 Temps de transfert</div>
+      <div class="eq">T<sub>transfert</sub> = T<sub>transmission</sub> + T<sub>propagation</sub></div>
+      <div class="eq">T<sub>transmission</sub> = Taille du message / Débit</div>
+      <div class="eq">T<sub>propagation</sub> = Distance / Vitesse de propagation</div></div>
+    <div class="box trap"><div class="bt">⚠️ Ne confonds pas</div>
+      <b>Transmission</b> = le temps pour « pousser » tous les bits sur la ligne (dépend du débit). <b>Propagation</b> = le temps que le signal voyage d'un bout à l'autre (dépend de la distance). Le <b>satellite</b> a une grosse propagation (36 000 km !) → c'est exactement l'exo 2023 ACAD A.</div>
+
+    <h3>2.4 Caractéristiques du canal : bande passante & capacité</h3>
+    <ul>
+      <li><b>Bande passante W</b> : la plage de fréquences que le canal laisse passer correctement (en Hz).</li>
+      <li><b>Capacité C</b> : le débit max possible (bits/s).</li>
+    </ul>
+    <div class="box formula"><div class="bt">📐 Débit maximal théorique</div>
+      <div class="eq">Nyquist (sans bruit) : D<sub>max</sub> = 2·W·log₂(V)</div>
+      <div class="eq">Shannon (avec bruit) : C = W·log₂(1 + S/B)</div>
+      W = bande passante (Hz), V = valence, S/B = rapport signal/bruit.</div>
+    <div class="box worked"><div class="bt">✏️ Exemple (type bonus 2022)</div>
+      « Image 800×600 pixels, 16 bits/pixel, 60 images/s. Débit ? »<br>
+      Bits par image = 800 × 600 × 16 = 7 680 000 bits.<br>
+      Débit = 7 680 000 × 60 = <b>460 800 000 bits/s ≈ 460,8 Mbit/s.</b></div>
+
+    <h3>2.5 Les supports physiques <span style="font-size:13px;color:var(--exam)">🎯 tableau à remplir (2022 ACAD C)</span></h3>
+    <table>
+      <tr><th>Support</th><th>Débit</th><th>Portée</th><th>Usage typique</th></tr>
+      <tr><td><b>Paire torsadée</b></td><td>1 à 16 Mbit/s</td><td>100 à 250 m (courte)</td><td>Téléphonie, réseaux locaux (le + utilisé)</td></tr>
+      <tr><td><b>Câble coaxial</b></td><td>2 à 100 Mbit/s</td><td>~3 à 4,5 km (longue)</td><td>Ethernet ancien, télévision (CATV)</td></tr>
+      <tr><td><b>Fibre optique</b></td><td>plusieurs Gbit/s</td><td>15 à 500 km (très longue)</td><td>Hauts débits, dorsales ; immunisée aux parasites</td></tr>
+      <tr><td><b>Satellite</b></td><td>hautes fréquences</td><td>36 000 km (géostationnaire)</td><td>Couverture mondiale ; problème = confidentialité</td></tr>
+    </table>
+
+    <h3>2.6 Modes de transmission <span style="font-size:13px;color:var(--exam)">🎯 vocabulaire QCM</span></h3>
+    <div class="grid2">
+      <div class="card"><h4>Sens des échanges</h4>
+        <ul><li><b>Simplex</b> : un seul sens (ex. radio FM).</li>
+        <li><b>Half-duplex</b> : les deux sens mais <b>pas en même temps</b> (talkie-walkie).</li>
+        <li><b>Full-duplex</b> : les deux sens <b>simultanément</b> (téléphone).</li></ul></div>
+      <div class="card"><h4>Mode de transmission</h4>
+        <ul><li><b>Série</b> : les bits un par un sur un fil.</li>
+        <li><b>Parallèle</b> : N bits en même temps sur N fils (rapide mais coûteux).</li></ul></div>
+      <div class="card"><h4>Synchronisation</h4>
+        <ul><li><b>Asynchrone</b> : caractère par caractère, avec bits START/STOP (7 bits + parité → 10 bits). Simple, lent.</li>
+        <li><b>Synchrone</b> : flot continu de trames, horloge commune. Rapide, efficace, plus complexe.</li></ul></div>
+      <div class="card"><h4>À retenir</h4>Une transmission se décrit par <b>4 choses</b> : connecté/non · simplex/half/full · série/parallèle · synchrone/asynchrone.</div>
+    </div>
+
+    <div class="box skip"><div class="bt">⏭️ Tu peux survoler</div>
+      Séries de Fourier, transformée de Fourier, théorème de Parseval, filtrage linéaire, |G(f)|²… C'est dans les slides mais ce n'est <b>jamais</b> demandé en calcul à l'examen. Comprends juste l'idée : « tout signal se décompose en somme de sinusoïdes ». Point.</div>
+  </section>
+
+  <!-- ============ CHAP 3 ============ -->
+  <section id="c3" class="chap">
+    <h2><span class="num">3</span> Codage en ligne & Modulation <span style="font-size:14px;color:var(--exam)">🎯 TOMBE PRESQUE TOUJOURS</span></h2>
+    <p class="lead">Comment envoyer des 0 et des 1 sur un câble ? Deux familles : <b>transmission numérique</b> (on code les bits en niveaux de tension = <i>codage en ligne</i>) et <b>transmission analogique</b> (on déforme une onde = <i>modulation</i>, il faut un modem).</p>
+
+    <h3>3.1 Transmission numérique : le codage en ligne</h3>
+    <p>On représente directement les 0/1 par des variations de tension. Les codages à connaître :</p>
+    <table>
+      <tr><th>Codage</th><th>Règle simple</th></tr>
+      <tr><td><b>NRZ</b> (Non Return to Zero)</td><td>1 = tension positive, 0 = tension négative. La tension <b>ne revient pas à 0</b> entre les bits.</td></tr>
+      <tr><td><b>RZ</b> (Return to Zero)</td><td>La tension <b>revient à 0</b> au milieu de chaque bit.</td></tr>
+      <tr><td><b>Manchester</b> (biphasé) <span style="color:var(--exam)">🎯</span></td><td>Il y a <b>toujours une transition au milieu</b> du bit : <b>front descendant = 1</b>, <b>front montant = 0</b>. (Convention du cours USTHB.) Utilisé par <b>Ethernet</b>.</td></tr>
+      <tr><td><b>Manchester différentiel</b></td><td>Transition au milieu = toujours. Le bit dépend de la présence/absence de transition <b>au début</b>. Utilisé par <b>Token Ring</b>.</td></tr>
+      <tr><td><b>Bipolaire (AMI)</b></td><td>0 = pas de courant ; 1 = courant alternativement + puis − (évite le courant continu).</td></tr>
+    </table>
+    <div class="box simple"><div class="bt">💡 Pourquoi Manchester ?</div>
+      Parce qu'il y a une transition à <b>chaque</b> bit, le récepteur peut <b>se resynchroniser</b> en permanence (il « voit » le rythme). L'inconvénient : il prend deux fois plus de place en fréquence.</div>
+    <div class="box worked"><div class="bt">✏️ Exemple : coder <code>1011</code> en Manchester (descendant=1, montant=0)</div>
+      Chaque bit = un intervalle coupé en deux moitiés.
+      <ul>
+        <li><b>1</b> → haut puis bas (front <b>descendant</b> au milieu) : ▔▏▁</li>
+        <li><b>0</b> → bas puis haut (front <b>montant</b> au milieu) : ▁▏▔</li>
+        <li><b>1</b> → ▔▏▁ &nbsp;&nbsp; <b>1</b> → ▔▏▁</li>
+      </ul>
+      Donc <code>1011</code> = ⌐_ ⌐_ → vérifie qu'il y a bien une transition <b>au milieu de chaque bit</b>. (Type exo 2017.)</div>
+    <div class="box trap"><div class="bt">⚠️ Piège</div>
+      Selon le prof, la convention « front montant/descendant = 0 ou 1 » peut être inversée. <b>Toujours indiquer ta convention</b> au début de ta réponse (« je prends front descendant = 1 »), comme ça tu n'es pas pénalisé.</div>
+
+    <h3>3.2 Transmission analogique : la modulation (ASK / FSK / PSK)</h3>
+    <div class="box simple"><div class="bt">💡 En clair</div>
+      On part d'une onde régulière (la <b>porteuse</b>) et on la « déforme » pour coder les bits. On peut déformer 3 choses (les 3 caractéristiques du signal !) :</div>
+    <table>
+      <tr><th>Technique</th><th>On fait varier…</th><th>Image</th></tr>
+      <tr><td><b>ASK</b> (Amplitude Shift Keying)</td><td>l'<b>amplitude</b> (la hauteur)</td><td>Parler fort / doucement</td></tr>
+      <tr><td><b>FSK</b> (Frequency Shift Keying)</td><td>la <b>fréquence</b> (la vitesse de l'onde)</td><td>Voix aiguë / grave</td></tr>
+      <tr><td><b>PSK</b> (Phase Shift Keying)</td><td>la <b>phase</b> (le décalage)</td><td>Commencer l'onde en avance / en retard</td></tr>
+    </table>
+
+    <div class="box exam"><div class="bt">🎯 LA technique qui rapporte des points : calculer la valence</div>
+      Si on combine plusieurs modulations, on multiplie le nombre d'états possibles :
+      <div class="eq" style="background:#fff;border:1px dashed var(--exam-line);border-radius:10px;padding:10px;margin:8px 0;text-align:center;font-size:18px">
+      V = (nb d'amplitudes) × (nb de phases) × (nb de fréquences)</div>
+      Puis <b>n = log₂(V)</b> = nombre de bits transportés par état.</div>
+    <div class="box worked"><div class="bt">✏️ Exemple réel (2022 ISIL)</div>
+      <b>MOD1</b> : 2 amplitudes (A1, A2) et 2 phases (0, π). → V₁ = 2 × 2 = <b>4</b>, donc n₁ = log₂4 = <b>2 bits/état</b>.<br>
+      <b>MOD2</b> : 2 amplitudes et 3 phases (0, π, π/2). → V₂ = 2 × 3 = <b>6</b>… mais comme on code en binaire on prend la puissance de 2 supérieure utile : ici le corrigé donne <b>V₂ = 8</b> (2 amplitudes × 2 phases × 2 fréquences, ou en arrondissant à 2³). <b>n₂ = 3 bits/état.</b><br>
+      <span style="color:var(--trap)">Astuce : la valence finale est presque toujours une puissance de 2 (2, 4, 8, 16…) pour coder un nombre entier de bits.</span></div>
+    <div class="box worked"><div class="bt">✏️ Exemple (2022 ACAD C) : « 16 signaux distincts, R = 1200 bauds »</div>
+      V = 16 → n = log₂16 = <b>4 bits/état</b>.<br>
+      Débit D = n × R = 4 × 1200 = <b>4800 bits/s</b>. Chaque signal transporte <b>4 bits</b>.</div>
+
+    <div class="box simple"><div class="bt">💡 Lire un signal pour retrouver les modulations (exo classique)</div>
+      On te donne un signal dessiné et on demande « quelles modulations sont utilisées ? ». Méthode :
+      <ul>
+        <li>Combien de <b>hauteurs</b> différentes vois-tu ? → c'est le nb d'<b>amplitudes</b> (ASK si &gt;1).</li>
+        <li>Combien de <b>vitesses d'oscillation</b> ? → nb de <b>fréquences</b> (FSK si &gt;1).</li>
+        <li>Le signal démarre-t-il parfois « à l'envers » ? → nb de <b>phases</b> (PSK si &gt;1).</li>
+      </ul>
+      Puis V = produit des trois, et n = log₂(V).</div>
+  </section>
+
+  <!-- ============ CHAP 4 ============ -->
+  <section id="c4" class="chap">
+    <h2><span class="num">4</span> Multiplexage <span style="font-size:14px;color:var(--exam)">🎯 L'EXERCICE LE PLUS FRÉQUENT</span></h2>
+    <p class="lead">Le multiplexage = faire passer <b>plusieurs communications sur une seule grosse ligne</b>. C'est presque toujours le 1ᵉʳ exercice, fusionné avec la modulation. Apprends la méthode et tu gagnes ces points à chaque fois.</p>
+
+    <div class="box simple"><div class="bt">💡 En clair</div>
+      Imagine une autoroute (voie <b>Haute Vitesse</b>, HV) qui regroupe plusieurs petites routes (voies <b>Basse Vitesse</b>, BV). Le <b>multiplexeur (MUX)</b> mélange les voitures à l'entrée, le <b>démultiplexeur (DEMUX)</b> les retrie à la sortie. On partage la grosse ligne <b>sans mélanger</b> les messages.</div>
+
+    <h3>4.1 Les deux grandes familles</h3>
+    <div class="grid2">
+      <div class="card"><h4>Multiplexage fréquentiel (AMRF / FDM)</h4>
+        On découpe la <b>bande de fréquences</b> en sous-bandes, une par utilisateur (comme les stations de radio). Transmissions <b>en parallèle</b>. Il faut des <b>bandes de garde</b> entre les canaux pour éviter qu'ils se chevauchent.
+        <div class="box exam" style="margin:8px 0 0"><div class="bt">🎯</div>Pour n canaux il faut <b>n−1 bandes de garde</b> (tombé en QCM 2020).</div></div>
+      <div class="card"><h4>Multiplexage temporel (AMRT / TDM)</h4>
+        Chaque voie a tour de rôle <b>toute</b> la bande passante pendant un petit instant appelé <b>quantum</b> (Q). Transmissions <b>en série</b>. C'est CELUI des exercices.
+        <ul><li><b>Synchrone</b> : quantums <b>égaux</b>, donnés à chacun périodiquement (même si pas de données → on perd du temps).</li>
+        <li><b>Asynchrone</b> : quantum donné <b>à la demande</b> (seulement aux voies qui ont des données) → il faut ajouter l'adresse de la source.</li></ul></div>
+    </div>
+
+    <h3>4.2 Les formules du multiplexage temporel <span style="font-size:13px;color:var(--exam)">🎯 à connaître</span></h3>
+    <div class="box formula"><div class="bt">📐 Formules clés</div>
+      <div class="eq">R<sub>mux</sub> = somme des rapidités des voies BV = Σ R<sub>i</sub></div>
+      Si toutes les voies sont identiques : R<sub>mux</sub> = n × R<sub>i</sub> (n voies)
+      <div class="eq">D<sub>mux</sub> = R<sub>mux</sub> × log₂(V)  &nbsp;(débit de la HV)</div>
+      <div class="eq">Δ<sub>mux</sub> = 1 / R<sub>mux</sub>  &nbsp;(durée d'un état sur la HV)</div>
+      <div class="eq">Période de scrutation : Ts = n × Q</div>
+      <div class="eq">Débit d'une voie BV : d = D / n</div></div>
+
+    <div class="box exam"><div class="bt">🎯 La RECETTE pas-à-pas (vue dans 2017, 2019, 2020, 2022, 2023…)</div>
+      <ol>
+        <li><b>Trouve la valence V</b> du signal (nb d'amplitudes × phases × fréquences) → <b>n = log₂V</b> bits par état.</li>
+        <li><b>Rmux</b> = D<sub>HV</sub> / n &nbsp;(si on te donne le débit HV) &nbsp;<b>ou</b>&nbsp; Σ R<sub>i</sub>.</li>
+        <li><b>Δmux</b> = 1 / Rmux (durée d'un état multiplexeur).</li>
+        <li><b>Quantum Q</b> : selon l'énoncé (« Q = un état » → Q = Δmux ; « un état et demi » → Q = 1,5·Δmux ; « stocke 4 états » → buffer = 4×n bits).</li>
+        <li><b>Extraire les messages</b> : découpe la séquence HV par paquets de n bits, et distribue à tour de rôle aux voies (PC1, PC2, PC3… dans l'ordre).</li>
+        <li><b>Nb de scrutations</b> = combien de tours complets pour tout envoyer.</li>
+      </ol>
+    </div>
+
+    <div class="box worked"><div class="bt">✏️ Exemple résolu COMPLET (2017, corrigé officiel)</div>
+      3 lignes L1, L2, L3 multiplexées en temporel synchrone. Sur la HV : séquence de 39 bits. Échelle : 1 unité = 0,33 ms. On voit un <b>silence de 3 unités à partir de la 9ᵉ unité</b>.<br><br>
+      <b>1) Quantum ?</b> Une scrutation se termine à 9 unités. Une scrutation = 3 quantums (3 lignes) = 9×0,33 = 3 ms → <b>Q = 3/3 = 1 ms.</b><br>
+      <b>2) Rapidités ?</b> Δmux = 0,33 ms → Rmux = 1/0,33ms = <b>3000 bauds</b>. Comme R1=R2=R3 : Rmux = 3·Ri → <b>Ri = 1000 bauds.</b><br>
+      <b>3) Extraire les messages</b> avec D1=3000, D2=4000, D3=2000 bps → n1=D1/Ri=3, n2=4, n3=2 bits par état. On découpe la HV en respectant ces tailles à chaque tour :<br>
+      <span class="bits">MSG1 = 000111001 &nbsp; MSG2 = 0000 1111 0011 1000 0100 0010 &nbsp; MSG3 = 010011</span><br>
+      <b>4) Modulations</b> : M1 a 2 amplitudes, 2 phases, 2 fréquences → V=8, n=3 → ASK+PSK+FSK. M2 : 2 ampl × 2 phases × 4 fréq → V=16, n=4. M3 : 2 ampl × 2 phases → V=4, n=2.<br>
+      <b>5)</b> On dessine MSG1 en Manchester.</div>
+
+    <div class="box worked"><div class="bt">✏️ Exemple résolu (2020 ACAD, corrigé)</div>
+      Débit HV = 9600 bits/s. Signal lu : 2 amplitudes × 2 fréquences × … → <b>V = 16 = 2⁴</b>, donc n = 4 bits/état.<br>
+      • Rmux = D/n = 9600/4 = <b>2400 bauds</b> → Δmux = 1/2400 ≈ <b>0,42 ms</b>.<br>
+      • Quantum = « un état et demi » → Q = 0,42 + 0,21 = <b>0,63 ms</b>. Buffer = 1,5 × 4 = <b>6 bits</b>.<br>
+      • 4 PC → Ri = Rmux/4 = <b>600 bauds</b> → Δi = 1/600 ≈ <b>1,66 ms</b> par état sur chaque ligne BV.</div>
+
+    <div class="box trap"><div class="bt">⚠️ Pièges du multiplexage</div>
+      <ul>
+        <li>Bien distinguer <b>Rmux</b> (sur la grosse ligne, rapide) et <b>Ri</b> (sur chaque petite ligne, lente). Rmux = n × Ri.</li>
+        <li>Un <b>silence</b> dans le signal = une ligne n'a rien à envoyer ce tour-là (en synchrone, le quantum est quand même réservé).</li>
+        <li>Distribue les bits aux PC <b>dans l'ordre annoncé</b> (PC1, PC2, PC3…) et recommence à chaque scrutation.</li>
+      </ul>
+    </div>
+
+    <h3>4.3 Concentration & Hub</h3>
+    <p>La <b>concentration</b> = recevoir sur plusieurs lignes et tout remettre sur une seule (partage dans le temps). La <b>diffusion</b> = l'inverse. Un <b>concentrateur (Hub)</b> = un multiplexeur temporel asynchrone « intelligent » qui alloue les quantums à la demande.</p>
+  </section>
+
+  <!-- ============ CHAP 5 ============ -->
+  <section id="c5" class="chap">
+    <h2><span class="num">5</span> Détection & correction d'erreurs <span style="font-size:14px;color:var(--exam)">🎯 1 exo quasi garanti</span></h2>
+    <p class="lead">Les câbles font des erreurs (un bit se retourne). On ajoute donc des <b>bits de contrôle (redondance)</b> pour <b>détecter</b> (et parfois <b>corriger</b>) ces erreurs. L'examen choisit UN parmi : VRC/LRC, Hamming, ou CRC polynomial.</p>
+
+    <div class="box formula"><div class="bt">📐 Le vocabulaire des codes</div>
+      Un code <b>C(n,k)</b> : on prend <b>k bits utiles</b>, on ajoute <b>r bits de contrôle</b>, total <b>n = k + r</b>.<br>
+      Il y a <b>2ᵏ</b> mots de code <b>valides</b> (sur 2ⁿ combinaisons possibles).<br>
+      <b>Efficacité (rendement)</b> = k / n.</div>
+
+    <h3>5.1 La parité simple (VRC) et croisée (LRC) <span style="font-size:13px;color:var(--exam)">🎯</span></h3>
+    <div class="box simple"><div class="bt">💡 En clair</div>
+      <b>Parité paire</b> : on ajoute un bit pour que le nombre total de 1 soit <b>pair</b>. Si à l'arrivée le compte est impair → il y a eu une erreur. C'est comme compter ses doigts pour vérifier qu'il n'en manque pas.</div>
+    <ul>
+      <li><b>VRC</b> (Vertical Redundancy Check) = 1 bit de parité <b>par caractère</b> (par ligne). Détecte les erreurs en <b>nombre impair</b>, ne corrige pas.</li>
+      <li><b>LRC</b> (Longitudinal Redundancy Check) = 1 caractère de parité <b>par colonne</b>, ajouté à la fin du bloc.</li>
+    </ul>
+    <div class="box exam"><div class="bt">🎯 La force du VRC + LRC ensemble = CORRECTION</div>
+      Si on a parité par ligne (VRC) <b>et</b> par colonne (LRC), une erreur sur 1 bit fausse <b>une ligne ET une colonne</b>. L'intersection de la ligne fausse et de la colonne fausse <b>localise</b> le bit erroné → on l'inverse pour <b>corriger</b> ! (Exactement l'exo 2020 ACAD et 2022 ISIL.)</div>
+    <div class="box worked"><div class="bt">✏️ Exemple résolu (parité paire, type 2020 ACAD « OSI »)</div>
+      Mot « OSI » en ASCII 7 bits : O=1001111, S=1010011, I=1000011. On dispose en matrice, on ajoute le bit VRC (parité paire par ligne) et la ligne LRC (parité paire par colonne) :
+      <table class="mono" style="max-width:430px">
+        <tr><th>Car.</th><th>b1 b2 b3 b4 b5 b6 b7</th><th>VRC</th></tr>
+        <tr><td>O</td><td>1 0 0 1 1 1 1</td><td>1 <span style="color:var(--soft)">(5 uns→impair, +1)</span></td></tr>
+        <tr><td>S</td><td>1 0 1 0 0 1 1</td><td>0 <span style="color:var(--soft)">(4 uns→pair)</span></td></tr>
+        <tr><td>I</td><td>1 0 0 0 0 1 1</td><td>1 <span style="color:var(--soft)">(3 uns→impair, +1)</span></td></tr>
+        <tr><td><b>LRC</b></td><td>1 0 1 1 1 1 1</td><td>1</td></tr>
+      </table>
+      Chaque bit LRC = parité paire de sa colonne (ex. colonne 1 : 1,1,1 → impair → met 1 pour rendre pair). On envoie les 3 caractères + leur VRC, puis le caractère LRC.<br>
+      <b>Correction :</b> à l'arrivée, si la VRC de la ligne 2 est fausse <i>et</i> la LRC de la colonne 4 est fausse → le bit erroné est à <b>(ligne 2, colonne 4)</b>, on l'inverse.</div>
+
+    <h3>5.2 Distance de Hamming <span style="font-size:13px;color:var(--exam)">🎯 petite question fréquente</span></h3>
+    <div class="box simple"><div class="bt">💡 En clair</div>
+      La <b>distance de Hamming</b> entre deux mots = <b>le nombre de bits qui diffèrent</b>. Truc rapide : fais le <b>XOR</b> des deux mots et compte les 1.<br>
+      Ex : 1101 ⊕ 1001 = 0100 → <b>distance = 1</b>.</div>
+    <p>La <b>distance minimale d'un code</b> (Dmin) = la plus petite distance entre deux mots valides du code. C'est elle qui décide du pouvoir de détection/correction :</p>
+    <div class="box formula"><div class="bt">📐 Théorème (à citer)</div>
+      <div class="eq">Si Dmin = 2d + 1 → détecte 2d erreurs, corrige d erreurs</div>
+      <div class="eq">Si Dmin = 2d → détecte 2d−1 erreurs, corrige d−1 erreurs</div>
+      Ex : {0000, 1111}, Dmin = 4 = 2×2 → détecte 3 erreurs, corrige 1.</div>
+    <div class="box simple"><div class="bt">💡 Vecteur d'erreur</div>
+      Si X est émis et X' reçu : <b>E = X ⊕ X'</b>. Si E = 0 → pas d'erreur. Sinon les 1 de E sont les positions des bits erronés.</div>
+
+    <h3>5.3 Codes polynomiaux / CRC <span style="font-size:13px;color:var(--exam)">🎯 exo technique récurrent</span></h3>
+    <div class="box simple"><div class="bt">💡 L'idée géniale</div>
+      On voit une suite de bits comme un <b>polynôme</b> (chaque bit = coefficient). Émetteur et récepteur se mettent d'accord sur un <b>polynôme générateur G(x)</b>. On bricole le message pour qu'il soit <b>divisible par G(x)</b>. À l'arrivée : si la division tombe juste (reste = 0) → pas d'erreur. Sinon → erreur.</div>
+    <div class="box simple"><div class="bt">💡 Bits → polynôme</div>
+      <code>001101</code> (6 bits) → de gauche (poids fort) à droite : le bit de gauche est le coefficient de x⁵.<br>
+      = 0·x⁵ + 0·x⁴ + 1·x³ + 1·x² + 0·x + 1 = <b>x³ + x² + 1</b>.</div>
+
+    <div class="box formula"><div class="bt">📐 La méthode CRC (codage à l'émission)</div>
+      Soit Z(x) le message utile (k bits), G(x) le générateur de degré <b>r</b> (donc r bits de contrôle, code C(n,k) avec n=k+r).
+      <ol style="margin:6px 0">
+        <li>Multiplier Z(x) par <b>xʳ</b> (= décaler de r bits à gauche, = ajouter r zéros).</li>
+        <li>Diviser Z(x)·xʳ par G(x) <b>(en XOR, modulo 2 : pas de retenue)</b> → on obtient un reste <b>A(x)</b> (degré ≤ r−1).</li>
+        <li>Le mot à envoyer : <b>Y(x) = Z(x)·xʳ + A(x)</b> = message utile + A(x) collé à la fin.</li>
+      </ol>
+      À la réception : on divise le mot reçu par G(x). <b>Reste = 0 → OK</b> ; reste ≠ 0 → erreur (le syndrome S(x) = mot reçu mod G(x)).</div>
+
+    <div class="box worked"><div class="bt">✏️ Exemple résolu (résumé du cours) : C(9,6), G(x)=x³+1, message 001101</div>
+      Z(x) = x³+x²+1 (= 001101). r = 3 (degré de G).<br>
+      1) Z(x)·x³ = x⁶+x⁵+x³ → en bits : <span class="bits">001101000</span> (on a ajouté 3 zéros).<br>
+      2) Division par G(x)=x³+1 (1001) en XOR → reste <b>A(x) = x²</b> (= 100, écrit sur 3 bits).<br>
+      3) Mot envoyé Y(x) = x⁶+x⁵+x³+x² → <span class="bits">001101 100</span> (les 3 derniers bits = la redondance).<br>
+      <span style="color:var(--trap)">⚠️ Écris toujours A(x) sur exactement r bits : si A(x)=x, ça s'écrit <b>010</b>, pas <b>10</b>.</span></div>
+
+    <div class="box simple"><div class="bt">💡 Comment poser la division en XOR (pas de retenue !)</div>
+      La « soustraction » modulo 2 = un simple <b>XOR</b> bit à bit (1⊕1=0, 1⊕0=1, 0⊕0=0). Tu poses la division comme à l'école primaire, mais à chaque étape tu fais un XOR au lieu d'une vraie soustraction. Tu descends les bits un par un. Le dernier reste = A(x).</div>
+
+    <div class="box exam"><div class="bt">🎯 Propriétés de G(x) (questions de cours)</div>
+      <ul>
+        <li>Détecte toute <b>erreur simple</b> si G(x) a au moins 2 termes non nuls (c'est pour ça que g₀ = gᵣ = 1).</li>
+        <li>Détecte toute erreur en <b>nombre impair</b> si G(x) est divisible par (x+1).</li>
+        <li>Détecte toutes les <b>rafales d'erreurs</b> de longueur ≤ r (degré de G).</li>
+      </ul>
+      Exemple de générateur réel : HDLC utilise <b>x¹⁶ + x¹² + x⁵ + 1</b> (le fameux CRC-CCITT, FCS sur 16 bits).</div>
+
+    <div class="box skip"><div class="bt">⏭️ Le circuit logique (registre à décalage)</div>
+      Parfois on demande de « dessiner le circuit diviseur » : c'est un registre à r bascules reliées par des XOR, là où G(x) a un coefficient 1. Comprends le principe (bascules = bits de contrôle, XOR aux positions des termes de G) mais ne passe pas des heures dessus : ça vaut peu de points.</div>
+  </section>
+
+  <!-- ============ CHAP 6 ============ -->
+  <section id="c6" class="chap">
+    <h2><span class="num">6</span> Couche Liaison & le protocole HDLC</h2>
+    <p class="lead">La couche 2 transforme les bits bruts en <b>trames</b> fiables. Elle détecte les erreurs, contrôle le flux, et délimite les trames. Le protocole star = <b>HDLC</b> (tombé en 2022 ACAD A et 2021 ISIL).</p>
+
+    <h3>6.1 Rôle et sous-couches</h3>
+    <p>La couche liaison se divise en deux sous-couches :</p>
+    <ul>
+      <li><b>LLC</b> (Logical Link Control) : synchronisation des trames, contrôle de flux, vérification des erreurs.</li>
+      <li><b>MAC</b> (Media Access Control) : qui a le droit de parler sur un canal partagé (voir Chap. 7).</li>
+    </ul>
+    <p>Ses 4 fonctions : <b>détection d'erreurs · correction/reprise · contrôle de flux · découpage en trames</b> (PDU).</p>
+
+    <h3>6.2 Délimiter les trames (où commence/finit une trame ?)</h3>
+    <table>
+      <tr><th>Méthode</th><th>Principe</th><th>Problème</th></tr>
+      <tr><td>Compter les caractères</td><td>Un champ dit combien de caractères</td><td>Si le compteur est faussé → désynchro totale</td></tr>
+      <tr><td>Caractères spéciaux (DLE/STX/ETX)</td><td>Marqueurs de début/fin</td><td>Les données peuvent contenir ces caractères</td></tr>
+      <tr><td><b>Fanions (flags) + bit stuffing</b> <span style="color:var(--exam)">🎯</span></td><td>Trame encadrée par <code>01111110</code></td><td>Réglé par la transparence (voir ci-dessous)</td></tr>
+    </table>
+    <div class="box exam"><div class="bt">🎯 Le bit stuffing (transparence au fanion)</div>
+      Le fanion est <code>01111110</code> (un 0, six 1, un 0… en fait cinq 1). Pour éviter que les données ressemblent au fanion :
+      <ul><li><b>À l'émission</b> : après <b>cinq 1 consécutifs</b> dans les données, on insère un <b>0</b>.</li>
+      <li><b>À la réception</b> : après cinq 1 consécutifs, on enlève le 0 qui suit.</li></ul>
+      <b>Exemple :</b> données <code>0111111<u>0</u>0</code> → on insère un 0 après les cinq 1 : <code>011111<b>0</b>10...</code></div>
+
+    <h3>6.3 Contrôle de flux & fenêtre d'anticipation</h3>
+    <div class="box simple"><div class="bt">💡 En clair</div>
+      Le récepteur a des <b>tampons (buffers)</b> limités. Si l'émetteur envoie trop vite → débordement → trames perdues. Le contrôle de flux <b>ralentit</b> l'émetteur. La <b>fenêtre d'anticipation</b> = combien de trames l'émetteur peut envoyer <b>avant</b> de recevoir un accusé de réception (ACK).</p></div>
+    <ul>
+      <li><b>Send and Wait</b> : on envoie 1 trame, on attend l'ACK, puis la suivante. Simple mais lent.</li>
+      <li><b>Fenêtre glissante (sliding window)</b> : on envoie K trames d'affilée. K = taille de la fenêtre. Numérotation <b>modulo N</b> (cyclique : 0,1,…,N−1).</li>
+    </ul>
+
+    <h3>6.4 HDLC <span style="font-size:13px;color:var(--exam)">🎯</span></h3>
+    <p><b>HDLC</b> (High-level Data Link Control) : protocole <b>synchrone</b>, <b>orienté bit</b>, <b>mode connecté</b>, en 3 phases (établissement → transfert → libération).</p>
+    <p><b>Structure de la trame :</b></p>
+    <table class="mono">
+      <tr><th>Fanion</th><th>Adresse</th><th>Contrôle</th><th>Données</th><th>FCS</th><th>Fanion</th></tr>
+      <tr><td>01111110</td><td>8 bits</td><td>8 bits</td><td>variable</td><td>16 bits</td><td>01111110</td></tr>
+    </table>
+    <p>Le <b>FCS</b> (Frame Check Sequence) = 16 bits de CRC, généré par <code>x¹⁶ + x¹² + x⁵ + 1</code>.</p>
+
+    <div class="box exam"><div class="bt">🎯 Les 3 types de trames HDLC</div>
+      <table>
+        <tr><th>Type</th><th>Rôle</th></tr>
+        <tr><td><b>I</b> (Information)</td><td>Transporte les données. Porte N(S) = n° d'émission, N(R) = n° attendu en réception.</td></tr>
+        <tr><td><b>S</b> (Supervision)</td><td>Reprise sur erreur & contrôle de flux. Sous-types : <b>RR</b> (prêt à recevoir), <b>RNR</b> (occupé), <b>REJ</b> (rejet), <b>SREJ</b> (rejet sélectif).</td></tr>
+        <tr><td><b>U</b> (Unnumbered, non numérotée)</td><td>Établir/libérer la liaison : <b>SABM/SNRM</b> (établir), <b>UA</b> (acquittement), <b>DISC</b> (déconnexion).</td></tr>
+      </table>
+    </div>
+    <div class="box exam"><div class="bt">🎯 REJ vs SREJ (question 2022 ACAD A)</div>
+      <ul>
+        <li><b>REJ</b> (Reject) : « rejette tout à partir de N(R) » → demande de retransmettre <b>toutes</b> les trames depuis N(R) (reprise <i>Go-Back-N</i>).</li>
+        <li><b>SREJ</b> (Selective Reject) : « rejette <b>seulement</b> la trame N(R) » → retransmission de cette <b>unique</b> trame. Plus économe.</li>
+      </ul>
+      Les deux acquittent les trames de numéro ≤ N(R)−1.</div>
+    <div class="box simple"><div class="bt">💡 Diagramme d'échange (mode NRM)</div>
+      On te demande de dessiner les flèches A↔B. Règles : une trame I porte (N(S), N(R)). Une trame <b>mal reçue</b> → l'autre envoie <b>REJ N(R)</b> et l'émetteur retransmet à partir de là. En mode normal (NRM), le primaire autorise le secondaire à parler avec le bit <b>P</b> (Poll), le secondaire finit avec <b>F</b> (Final). On termine par <b>DISC</b> + <b>UA</b>.</div>
+
+    <div class="box skip"><div class="bt">⏭️ Survoler</div>
+      Le pseudo-code C des protocoles (Emetteur/Recepteur), SLIP, et tous les sous-modes (SARM, SNRME, ABME…). Connais juste : SABM/SNRM = établir, UA = OK, DISC = fermer.</div>
+  </section>
+
+  <!-- ============ CHAP 7 ============ -->
+  <section id="c7" class="chap">
+    <h2><span class="num">7</span> Sous-couche MAC : qui a le droit de parler ?</h2>
+    <p class="lead">Quand plusieurs machines partagent <b>un seul câble</b>, il faut une règle pour éviter que tout le monde parle en même temps (= <b>collision</b>). C'est la <b>méthode d'accès</b>.</p>
+
+    <h3>7.1 Les topologies physiques des LAN</h3>
+    <div class="grid2">
+      <div class="card"><h4>Bus</h4><ul class="pro"><li>Ajout de station sans couper le réseau</li><li>Pas de point critique central</li></ul><ul class="con"><li>Collisions possibles</li><li>Panne difficile à localiser</li></ul></div>
+      <div class="card"><h4>Étoile</h4><ul class="pro"><li>Maintenance centralisée</li><li>Panne directe à détecter</li><li>Ajout facile</li></ul><ul class="con"><li>Le centre (hub/switch) est un point critique</li></ul></div>
+      <div class="card"><h4>Anneau</h4><ul class="pro"><li>Pas de collision</li><li>Panne directe</li></ul><ul class="con"><li>Chaque station est critique</li><li>Ajout = coupure du réseau</li></ul></div>
+      <div class="card"><h4>À retenir</h4>Le choix dépend du coût, de la fiabilité et de la facilité de maintenance. L'étoile (avec switch) est la plus courante aujourd'hui.</div>
+    </div>
+
+    <h3>7.2 Les méthodes d'accès <span style="font-size:13px;color:var(--exam)">🎯 QCM fréquent</span></h3>
+    <table>
+      <tr><th>Famille</th><th>Méthode</th><th>Principe</th></tr>
+      <tr><td rowspan="2"><b>Statiques</b></td><td>AMRF (fréquence)</td><td>Chaque station a sa sous-bande de fréquence</td></tr>
+      <tr><td>AMRT (temps)</td><td>Chaque station a son créneau temporel (slot)</td></tr>
+      <tr><td rowspan="4"><b>Dynamiques<br>probabilistes</b></td><td>ALOHA</td><td>On émet quand on veut ; si collision → on réémet. Taux d'utilisation ~18%</td></tr>
+      <tr><td>Slotted ALOHA</td><td>ALOHA mais on n'émet qu'au début d'un slot. ~36%</td></tr>
+      <tr><td>CSMA</td><td>On <b>écoute</b> avant d'émettre</td></tr>
+      <tr><td><b>CSMA/CD</b> 🎯</td><td>On écoute avant ET pendant ; si collision → on stoppe et on réémet plus tard. <b>C'est Ethernet (802.3).</b></td></tr>
+      <tr><td><b>Dynamique<br>déterministe</b></td><td>Token Ring (802.5)</td><td>Un <b>jeton</b> circule ; seul celui qui l'a peut émettre. Pas de collision.</td></tr>
+    </table>
+
+    <div class="box exam"><div class="bt">🎯 CSMA/CD en détail (Ethernet)</div>
+      <ol>
+        <li>Écouter le câble. S'il est occupé → attendre.</li>
+        <li>Libre → émettre, tout en continuant d'écouter.</li>
+        <li><b>Collision détectée</b> → envoyer un signal de <b>bourrage (jam, 32 bits)</b> pour prévenir tout le monde, puis attendre un <b>temps aléatoire</b> (algorithme de <b>backoff</b>) avant de réessayer.</li>
+        <li>Après 16 collisions → abandon.</li>
+      </ol>
+      <b>Le point clé (souvent demandé) :</b> après collision, la technique pour éviter de recollisionner = <b>attendre un délai aléatoire</b> (chacun tire un temps différent). CSMA/CD n'est <b>pas déterministe</b> (on ne peut pas garantir un délai max).</div>
+
+    <div class="box exam"><div class="bt">🎯 802.3 (CSMA/CD) vs 802.5 (Token Ring)</div>
+      <ul>
+        <li><b>Faible charge</b> : Ethernet (802.3) est plus efficace.</li>
+        <li><b>Forte charge</b> : Ethernet souffre des collisions ; Token Ring reste stable.</li>
+        <li>802.3 = <b>probabiliste</b> (pas de délai garanti). 802.5 = <b>déterministe</b> (on connaît le délai max pour obtenir le jeton).</li>
+      </ul>
+    </div>
+
+    <h3>7.3 Ethernet : normes et trame <span style="font-size:13px;color:var(--exam)">🎯 pour l'exo d'interconnexion</span></h3>
+    <p>La notation Ethernet : <b>D-Trans-L</b> → <b>D</b> = débit (Mbit/s), <b>Trans</b> = Base (numérique) / Broad (analogique), <b>L</b> = support/longueur.</p>
+    <table>
+      <tr><th>Norme</th><th>Lecture</th></tr>
+      <tr><td><b>10 Base 2</b> / <b>10 Base 5</b></td><td>10 Mbit/s, numérique, <b>câble coaxial</b> (bus), 2≈185m / 5≈500m</td></tr>
+      <tr><td><b>10/100 Base T(X)</b></td><td>numérique, <b>paire torsadée</b> (étoile, hub/switch), segment 100 m</td></tr>
+      <tr><td><b>100 Base FX</b></td><td>numérique, <b>fibre optique</b> (étoile), segment ~500 m</td></tr>
+      <tr><td><b>1000 Base T/LX/SX</b></td><td>Giga Ethernet (1 Gbit/s)</td></tr>
+      <tr><td><b>FDDI</b></td><td>anneau en fibre optique (norme proche 802.5)</td></tr>
+    </table>
+    <div class="box simple"><div class="bt">💡 La trame Ethernet</div>
+      Préambule (7 oct) · SFD (1 oct) · @destination (6 oct) · @source (6 oct) · Longueur (2 oct) · <b>Données</b> · Bourrage (PAD) · <b>FCS</b> (4 oct = CRC 32 bits). Taille minimale d'une trame = <b>64 octets</b>.</div>
+    <div class="box exam"><div class="bt">🎯 Adresse MAC</div>
+      Identifiant <b>physique</b> de la carte réseau, sur <b>48 bits = 6 octets</b>, en hexadécimal (ex. <code>4D:EE:52:A4:F6:69</code>). Les 3 premiers octets = constructeur, les 3 derniers = n° de série. Broadcast = <code>FF:FF:FF:FF:FF:FF</code>.</div>
+  </section>
+
+  <!-- ============ CHAP 8 ============ -->
+  <section id="c8" class="chap">
+    <h2><span class="num">8</span> Couche Réseau & Routage <span style="font-size:14px;color:var(--exam)">🎯 tables de routage = points sûrs</span></h2>
+    <p class="lead">La couche 3 fait voyager les <b>paquets</b> de la source à la destination à travers plein de routeurs. Deux fonctions : <b>adressage</b> (chap. 9) et <b>routage</b> (choisir le chemin).</p>
+
+    <h3>8.1 Routage : l'idée</h3>
+    <div class="box simple"><div class="bt">💡 En clair</div>
+      Un routeur, c'est un carrefour avec un GPS. À chaque paquet qui arrive, il regarde l'<b>adresse de destination</b>, consulte sa <b>table de routage</b> (« pour aller à tel réseau, prends telle sortie »), et renvoie le paquet par le bon chemin.</div>
+    <ul>
+      <li><b>Mode datagramme</b> (non connecté) : chaque paquet est routé <b>indépendamment</b>, peut prendre un chemin différent. (C'est IP.)</li>
+      <li><b>Mode circuit virtuel</b> (connecté) : on établit un chemin une fois, tous les paquets le suivent. Identifié par un n° de voie logique (NVL).</li>
+    </ul>
+
+    <h3>8.2 Les tables de routage <span style="font-size:13px;color:var(--exam)">🎯 EXERCICE GARANTI</span></h3>
+    <div class="box exam"><div class="bt">🎯 Ce qu'on te demande</div>
+      On te donne une <b>topologie</b> (des LANs reliés par des routeurs) et tu dois <b>remplir la table de chaque routeur</b> : pour chaque réseau de destination → par quelle <b>sortie / prochain saut</b> y aller, en prenant le <b>chemin le plus court</b> (le moins de sauts).</div>
+    <div class="box simple"><div class="bt">💡 La méthode infaillible</div>
+      Pour CHAQUE routeur, liste TOUS les réseaux du schéma. Pour chacun :
+      <ul>
+        <li>Si le réseau est <b>directement connecté</b> au routeur → on note <b>« C »</b> (connecté / directe) + l'interface locale.</li>
+        <li>Sinon → on note l'<b>adresse du routeur voisin</b> vers lequel envoyer (le prochain saut), choisi pour minimiser le nombre de sauts.</li>
+      </ul></div>
+    <div class="box worked"><div class="bt">✏️ Exemple (2020 ISIL, corrigé)</div>
+      R1 a 3 interfaces (réseaux 140.27.0.0, 140.26.0.0, 140.25.0.0), R2 a 2 interfaces (140.25.0.0 partagé avec R1, et 141.25.0.0). Table de <b>R1</b> :
+      <table class="mono">
+        <tr><th>Réseau dest.</th><th>Prochain saut</th><th>Interface de sortie</th></tr>
+        <tr><td>140.27.0.0</td><td>C (directe)</td><td>140.27.10.12</td></tr>
+        <tr><td>140.26.0.0</td><td>C (directe)</td><td>140.26.10.10</td></tr>
+        <tr><td>140.25.0.0</td><td>C (directe)</td><td>140.25.10.12</td></tr>
+        <tr><td>141.25.0.0</td><td>140.25.6.66 (= R2)</td><td>140.25.10.12</td></tr>
+      </table>
+      Logique : R1 atteint ses 3 réseaux directement ; pour 141.25.0.0 (derrière R2), il passe par R2 via le réseau partagé 140.25.0.0.</div>
+
+    <h3>8.3 Algorithmes de routage (juste les noms)</h3>
+    <table>
+      <tr><th>Type</th><th>Idée</th><th>Exemple</th></tr>
+      <tr><td><b>Distance vector</b></td><td>Chaque routeur échange ses meilleures distances avec ses voisins</td><td>RIP</td></tr>
+      <tr><td><b>Link state</b></td><td>Tous les routeurs connaissent toute la topologie, calcul du plus court chemin (Dijkstra)</td><td>OSPF</td></tr>
+    </table>
+    <div class="box simple"><div class="bt">💡 Avantage/risque de « toutes les routes »</div>
+      Si on met <b>toutes</b> les routes possibles (pas seulement la plus courte) : ✅ on a un chemin de secours en cas de panne. ❌ tables plus grosses, recherche plus complexe, <b>risque de boucle de routage</b>. (Réponse type 2022 ISIL.)</div>
+
+    <div class="box skip"><div class="bt">⏭️ Survoler</div>
+      Inondation, hot-potato, backward learning, contrôle de congestion isarythmique, détails X.25 (bits Q/D/M, NVL/NGVL, PVC). Connais juste : congestion = trop de paquets ; TTL limite la vie d'un paquet pour éviter qu'il tourne en rond.</div>
+  </section>
+
+  <!-- ============ CHAP 9 ============ -->
+  <section id="c9" class="chap">
+    <h2><span class="num">9</span> Adressage IP & sous-réseaux <span style="font-size:14px;color:var(--exam)">🎯★ LE ROI DE L'EXAMEN ★</span></h2>
+    <p class="lead">Si tu ne dois maîtriser <b>qu'une seule chose</b>, c'est celle-là. C'est le plus gros exercice, présent à chaque examen. La bonne nouvelle : c'est très mécanique une fois la méthode comprise.</p>
+
+    <h3>9.1 Une adresse IP, c'est quoi ?</h3>
+    <div class="box simple"><div class="bt">💡 En clair</div>
+      Une adresse IPv4 = <b>32 bits</b>, écrite en 4 nombres de 0 à 255 séparés par des points (ex. <code>192.168.1.10</code>). Chaque nombre = 1 octet = 8 bits. Elle a <b>2 parties</b> : la partie <b>réseau</b> (la rue) et la partie <b>machine/hôte</b> (le numéro de maison).</div>
+
+    <h3>9.2 Les classes d'adresses <span style="font-size:13px;color:var(--exam)">🎯</span></h3>
+    <table>
+      <tr><th>Classe</th><th>1ᵉʳ octet</th><th>Masque par défaut</th><th>Partie réseau / hôte</th></tr>
+      <tr><td><b>A</b></td><td>1 – 126</td><td>255.0.0.0 (/8)</td><td>réseau = 1 octet, hôte = 3 octets (énormes réseaux)</td></tr>
+      <tr><td><b>B</b></td><td>128 – 191</td><td>255.255.0.0 (/16)</td><td>réseau = 2 octets, hôte = 2 octets</td></tr>
+      <tr><td><b>C</b></td><td>192 – 223</td><td>255.255.255.0 (/24)</td><td>réseau = 3 octets, hôte = 1 octet (petits réseaux)</td></tr>
+      <tr><td><b>D</b></td><td>224 – 239</td><td>—</td><td>multicast (diffusion à un groupe)</td></tr>
+      <tr><td><b>E</b></td><td>240 – 255</td><td>—</td><td>expérimental</td></tr>
+    </table>
+    <div class="box trap"><div class="bt">⚠️ Pièges des classes</div>
+      <ul>
+        <li><b>127</b> = bouclage (loopback, tests locaux), pas une vraie classe A utilisable.</li>
+        <li>Nb de réseaux classe A = <b>126</b> (1 à 126), souvent piégé en QCM avec « 128 » → la bonne réponse selon le corrigé 2022 ISIL est 128 (= 2⁷) si on compte les combinaisons du 1er bit, mais le nombre <i>utilisable</i> est 126. Lis bien l'énoncé !</li>
+        <li>Adresses privées : <b>A</b> 10.x.x.x · <b>B</b> 172.16–31.x.x · <b>C</b> 192.168.x.x.</li>
+      </ul>
+    </div>
+
+    <h3>9.3 Adresses particulières</h3>
+    <ul>
+      <li><b>Partie hôte = tous les bits à 0</b> → désigne <b>le réseau lui-même</b> (ex. 192.168.1.0). On ne l'attribue pas à une machine.</li>
+      <li><b>Partie hôte = tous les bits à 1</b> → adresse de <b>broadcast</b> (diffusion à tout le réseau). On ne l'attribue pas non plus.</li>
+      <li><code>255.255.255.255</code> = broadcast local. <code>127.0.0.1</code> = soi-même (localhost).</li>
+    </ul>
+
+    <h3>9.4 Le masque et le découpage en sous-réseaux <span style="font-size:13px;color:var(--exam)">🎯 LE cœur</span></h3>
+    <div class="box simple"><div class="bt">💡 En clair</div>
+      Le <b>masque</b> sépare la partie réseau (bits à <b>1</b>) de la partie hôte (bits à <b>0</b>). La notation <b>/n</b> (ex. /20) dit « les n premiers bits sont la partie réseau ». Découper en <b>sous-réseaux</b> = emprunter des bits à la partie hôte pour créer plusieurs petits réseaux.</div>
+    <div class="box formula"><div class="bt">📐 Les formules qui sauvent la vie</div>
+      <div class="eq">Nb de sous-réseaux = 2^s &nbsp;(s = bits empruntés pour le sous-réseau)</div>
+      <div class="eq">Nb d'hôtes par sous-réseau = 2^h − 2 &nbsp;(h = bits restants pour l'hôte)</div>
+      Le « −2 » = on retire l'adresse réseau (hôte tout à 0) et le broadcast (hôte tout à 1).
+      <div class="eq">@réseau = IP <b>ET</b> masque &nbsp;|&nbsp; @broadcast = @réseau <b>OU</b> (NON masque)</div></div>
+
+    <div class="box exam"><div class="bt">🎯 RECETTE : « combien de bits emprunter ? »</div>
+      On te demande N sous-réseaux : prends <b>s tel que 2^s ≥ N</b>.<br>
+      Ex : besoin de 5 sous-réseaux → 2² = 4 (trop peu), 2³ = 8 ≥ 5 → <b>s = 3 bits.</b><br>
+      On te demande X hôtes par réseau : prends <b>h tel que 2^h − 2 ≥ X</b>.<br>
+      Ex : besoin de 200 hôtes → 2⁷−2 = 126 (trop peu), 2⁸−2 = 254 ≥ 200 → <b>h = 8 bits.</b></div>
+
+    <h3>9.5 La méthode pas-à-pas pour TOUT trouver</h3>
+    <div class="box exam"><div class="bt">🎯 Donné une IP /n, trouver @réseau, masque, 1ᵉʳ/dernier hôte, broadcast</div>
+      <ol>
+        <li><b>Masque</b> : n bits à 1. Convertis en décimal pointé.</li>
+        <li><b>Trouve l'octet « intéressant »</b> (celui où le masque n'est ni 255 ni 0). Le <b>pas (bloc)</b> = 256 − (valeur du masque dans cet octet).</li>
+        <li><b>@réseau</b> = le multiple du pas juste en-dessous de l'IP, dans cet octet (les octets suivants → 0).</li>
+        <li><b>broadcast</b> = @réseau + pas − 1 (dans l'octet intéressant ; octets suivants → 255).</li>
+        <li><b>1ᵉʳ hôte</b> = @réseau + 1. <b>dernier hôte</b> = broadcast − 1.</li>
+      </ol>
+    </div>
+    <div class="box worked"><div class="bt">✏️ Exemple résolu (2020 ISIL, corrigé) : 172.20.17.66 /20</div>
+      <b>Masque /20</b> = 11111111.11111111.1111<u>0000</u>.00000000 = <b>255.255.240.0</b>.<br>
+      L'octet intéressant = le 3ᵉ (240). Pas = 256 − 240 = <b>16</b>.<br>
+      Dans le 3ᵉ octet, l'IP vaut 17. Le multiple de 16 juste en-dessous de 17 = <b>16</b>.<br>
+      → <b>@réseau = 172.20.16.0</b><br>
+      → <b>broadcast = 172.20.31.255</b> (16+16−1 = 31 dans le 3ᵉ octet, 255 dans le 4ᵉ)<br>
+      → <b>1ᵉʳ hôte = 172.20.16.1</b> &nbsp; <b>dernier hôte = 172.20.31.254</b></div>
+    <div class="box worked"><div class="bt">✏️ Exemple (2022 ISIL) : LAN1 = 180.180.160.0 /20</div>
+      Pas = 16 (octet 3). @réseau 160 → broadcast = <b>180.180.175.255</b> (160+16−1 = 175).<br>
+      Donc les hôtes valides vont de 180.180.160.1 à 180.180.175.254. Une adresse comme 180.180.166.255 est un <b>hôte valide</b> (elle est dans la plage et n'est pas le broadcast 175.255), mais 180.180.180.254 est <b>hors</b> du réseau (180 &gt; 175).</div>
+    <div class="box worked"><div class="bt">✏️ « Ces IP sont-elles dans le même réseau ? » (2020 ISIL) : 200.200.200.130 /26</div>
+      /26 → masque 255.255.255.<b>192</b>. Pas = 256−192 = 64. Les blocs : .0, .64, .128, .192.<br>
+      130 tombe dans le bloc <b>128 → 191</b>. Donc @réseau = .128, broadcast = .191.<br>
+      → 200.200.200.<b>191</b> est dans le même réseau (c'est même son broadcast). .190 aussi. Mais .195 est dans le bloc suivant (192–255) → <b>pas</b> le même réseau.</div>
+
+    <h3>9.6 Concevoir un plan d'adressage (le gros exo) <span style="font-size:13px;color:var(--exam)">🎯</span></h3>
+    <div class="box exam"><div class="bt">🎯 RECETTE du plan d'adressage</div>
+      <ol>
+        <li><b>Compte les réseaux à adresser</b> : chaque LAN + chaque <b>liaison point-à-point entre routeurs</b> (on les oublie souvent !).</li>
+        <li><b>Bits de sous-réseau</b> : s tel que 2^s ≥ nb de réseaux.</li>
+        <li><b>Vérifie que ça rentre</b> : reste-t-il assez de bits hôte pour la plus grosse demande (2^h−2 ≥ max machines) ?</li>
+        <li><b>Attribue les plages</b> : sous-réseau 0, puis +pas, +pas… Donne à chaque LAN sa plage.</li>
+        <li><b>Adresses des interfaces routeurs</b> : souvent la <b>1ᵉʳ adresse</b> de chaque plage (passerelle).</li>
+      </ol>
+    </div>
+    <div class="box worked"><div class="bt">✏️ Exemple résolu (2017, corrigé) : 5 réseaux + 1 liaison, une seule @ classe C</div>
+      Besoin : 5 LANs + 1 liaison point-à-point = 6 réseaux → 2³ = 8 ≥ 6 → <b>s = 3 bits</b> de sous-réseau.<br>
+      Classe C : 8 bits hôte − 3 = 5 bits hôte → 2⁵−2 = 30 machines max par réseau (l'énoncé dit ~30 ✓).<br>
+      Adresse : <b>193.168.1.0</b>, masque <b>/27 = 255.255.255.224</b> (pas = 32). Plages :
+      <table class="mono">
+        <tr><th>Réseau</th><th>Plage</th></tr>
+        <tr><td>10 Base 5</td><td>193.168.1.32 → .63</td></tr>
+        <tr><td>100 Base TX</td><td>193.168.1.64 → .95</td></tr>
+        <tr><td>10 Base 2</td><td>193.168.1.96 → .127</td></tr>
+        <tr><td>100 Base FX</td><td>193.168.1.128 → .159</td></tr>
+        <tr><td>FDDI</td><td>193.168.1.160 → .191</td></tr>
+        <tr><td>Liaison R1–R3</td><td>193.168.1.192 → .223</td></tr>
+      </table>
+      Puis chaque routeur prend la 1ᵉʳ adresse utile de chaque plage qu'il touche.</div>
+    <div class="box trap"><div class="bt">⚠️ Les 3 erreurs qui coûtent cher</div>
+      <ul>
+        <li>Oublier de compter les <b>liaisons entre routeurs</b> comme des réseaux à part entière.</li>
+        <li>Confondre @réseau (hôte = 0) et 1ᵉʳ hôte (réseau + 1).</li>
+        <li>Oublier le <b>−2</b> dans le nombre d'hôtes utilisables.</li>
+      </ul>
+    </div>
+    <div class="box simple"><div class="bt">💡 Multicast pour une « tâche de contrôle commune »</div>
+      Si un groupe de machines doit faire une tâche commune → adresse de <b>classe D (multicast)</b>, ex. <code>224.0.0.1</code>. (Réponse type 2022 ISIL.)</div>
+  </section>
+
+  <!-- ============ CHAP 10 ============ -->
+  <section id="c10" class="chap">
+    <h2><span class="num">10</span> Le datagramme IP & la fragmentation <span style="font-size:14px;color:var(--exam)">🎯 fragmentation = très fréquent</span></h2>
+    <p class="lead">IP est le protocole qui met les paquets en forme et gère leur découpage. Deux choses tombent : <b>lire les champs d'un datagramme</b> et <b>fragmenter un datagramme</b>.</p>
+
+    <h3>10.1 IP en 3 rôles</h3>
+    <p>IP : ① définit le format du <b>datagramme</b>, ② gère le <b>routage</b>, ③ remise <b>non fiable</b> (pas de garantie d'arrivée — pas de séquencement, pas de contrôle de flux, pas de retransmission. C'est TCP qui s'en charge au-dessus).</p>
+
+    <h3>10.2 Les champs du datagramme IP <span style="font-size:13px;color:var(--exam)">🎯 lecture d'en-tête (2017, 2023)</span></h3>
+    <table>
+      <tr><th>Champ</th><th>Taille</th><th>À quoi ça sert</th></tr>
+      <tr><td><b>Version</b></td><td>4 bits</td><td>IPv4 (=4) ou IPv6 (=6)</td></tr>
+      <tr><td><b>IHL</b> (longueur en-tête)</td><td>4 bits</td><td>En mots de 32 bits. Valeur typique 5 → en-tête = 5×4 = <b>20 octets</b></td></tr>
+      <tr><td><b>TOS</b> (type of service)</td><td>8 bits</td><td>Priorité (0–7) + bits D/T/R/C (délai, débit, fiabilité, coût)</td></tr>
+      <tr><td><b>Longueur totale</b></td><td>16 bits</td><td>Taille du datagramme entier (en-tête + données) en octets</td></tr>
+      <tr><td><b>Identification</b></td><td>16 bits</td><td>N° unique du datagramme. <b>Recopié dans tous ses fragments.</b></td></tr>
+      <tr><td><b>Drapeaux</b></td><td>3 bits</td><td><b>DF</b> (Don't Fragment) · <b>MF</b> (More Fragments : 1 = il en reste, 0 = dernier)</td></tr>
+      <tr><td><b>Déplacement (Offset)</b></td><td>13 bits</td><td>Position du fragment dans le datagramme d'origine, <b>en multiples de 8 octets</b></td></tr>
+      <tr><td><b>TTL</b> (durée de vie)</td><td>8 bits</td><td>Nb max de routeurs. <b>−1 à chaque routeur</b>. À 0 → paquet détruit</td></tr>
+      <tr><td><b>Protocole</b></td><td>8 bits</td><td>1=ICMP, 2=IGMP, <b>6=TCP</b>, <b>17=UDP</b></td></tr>
+      <tr><td><b>Checksum en-tête</b></td><td>16 bits</td><td>Contrôle d'intégrité de l'en-tête</td></tr>
+      <tr><td><b>@ source / @ destination</b></td><td>32 bits ch.</td><td>Les adresses IP</td></tr>
+    </table>
+    <div class="box exam"><div class="bt">🎯 Questions typiques sur un datagramme (2017)</div>
+      <ul>
+        <li>« Que fait le prochain routeur ? » → si <b>TTL = 1</b>, il le décrémente à 0 et <b>détruit</b> le paquet.</li>
+        <li>« Est-ce un fragment ? » → non si <b>MF = 0 ET Offset = 0</b>.</li>
+        <li>« Même réseau émetteur/destinataire ? » → compare les <b>parties réseau</b> des deux IP.</li>
+        <li>« Longueur des données ? » → <b>Longueur totale − en-tête IP − en-tête TCP</b>.</li>
+        <li>« Quel type d'application ? » → regarde le <b>port destination</b> (80 = web, etc.).</li>
+      </ul>
+    </div>
+
+    <h3>10.3 La fragmentation <span style="font-size:13px;color:var(--exam)">🎯 RECETTE à connaître par cœur</span></h3>
+    <div class="box simple"><div class="bt">💡 En clair</div>
+      Chaque réseau a une taille de trame max, le <b>MTU</b> (Maximum Transfer Unit). Si un datagramme est <b>trop gros</b> pour le réseau suivant, le <b>routeur d'entrée le découpe en fragments</b>. Chaque fragment redevient un datagramme avec le <b>même ID</b>, mais des Offset différents.</div>
+    <div class="box formula"><div class="bt">📐 Les règles de la fragmentation</div>
+      <div class="eq">Données utiles max par fragment = ⌊(MTU − 20) / 8⌋ × 8</div>
+      (l'en-tête IP = 20 octets ; les données d'un fragment doivent être un <b>multiple de 8</b>, sauf le dernier)
+      <div class="eq">Offset d'un fragment = (octets de données AVANT lui) / 8</div>
+      <div class="eq">MF = 1 pour tous les fragments SAUF le dernier (MF = 0)</div>
+      L'<b>ID</b> est identique pour tous les fragments d'un même datagramme.</div>
+
+    <div class="box worked"><div class="bt">✏️ Exemple résolu COMPLET (2020 ACAD, corrigé) : datagramme 2000 oct, MTU=500</div>
+      Datagramme : 2000 octets total → en-tête 20 + <b>1980 octets de données</b>. ID = 1.<br>
+      MTU = 500 → données max par fragment = (500−20) = 480, déjà multiple de 8 → <b>480 octets/fragment</b>.<br>
+      1980 / 480 = 4 fragments pleins (4×480 = 1920) + 1 fragment de 60 octets. <b>5 fragments :</b>
+      <table class="mono">
+        <tr><th>Frag</th><th>Données</th><th>ID</th><th>Offset</th><th>MF</th></tr>
+        <tr><td>F1</td><td>480</td><td>1</td><td>0</td><td>1</td></tr>
+        <tr><td>F2</td><td>480</td><td>1</td><td>480/8 = 60</td><td>1</td></tr>
+        <tr><td>F3</td><td>480</td><td>1</td><td>960/8 = 120</td><td>1</td></tr>
+        <tr><td>F4</td><td>480</td><td>1</td><td>1440/8 = 180</td><td>1</td></tr>
+        <tr><td>F5</td><td>60</td><td>1</td><td>1920/8 = 240</td><td><b>0</b></td></tr>
+      </table>
+      <span style="color:var(--simple)">Vérif : 480×4 + 60 = 1980 ✓ &nbsp; et le dernier a MF = 0 ✓</span></div>
+
+    <div class="box worked"><div class="bt">✏️ Exemple à 2 étages (2019, corrigé) : 2500 oct, MTU 1500 puis 1100</div>
+      Datagramme 2500 oct (données 2480), ID = 4345.<br>
+      <b>R1 (MTU 1500)</b> : données max = 1480 (multiple de 8). → F1 : 1480 oct, offset 0, MF=1 ; F2 : 1000 oct, offset 1480/8 = 185, MF=0.<br>
+      <b>R2 (MTU 1100)</b> : ne re-fragmente que F1 (1480 &gt; 1080). données max = 1080. → F1.1 : 1080 oct, offset 0, MF=1 ; F1.2 : 400 oct, offset 1080/8 = 135, MF=1. (F2 passe tel quel.)</div>
+
+    <div class="box trap"><div class="bt">⚠️ Pièges de la fragmentation</div>
+      <ul>
+        <li>L'Offset est en <b>multiples de 8 octets</b> : divise toujours par 8 le nombre d'octets précédents.</li>
+        <li>Les données par fragment doivent être <b>multiples de 8</b> → si (MTU−20) n'est pas multiple de 8, arrondis <b>vers le bas</b>.</li>
+        <li>N'oublie pas de retirer les <b>20 octets d'en-tête</b> de la longueur totale pour avoir les données.</li>
+        <li>Le <b>dernier</b> fragment a MF = 0, tous les autres MF = 1.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ CHAP 11 ============ -->
+  <section id="c11" class="chap">
+    <h2><span class="num">11</span> ARP, ICMP, TCP, UDP</h2>
+    <p class="lead">Les protocoles autour d'IP. Surtout demandé : <b>TCP vs UDP</b>, l'en-tête TCP (drapeaux), et le rôle d'ARP/ICMP.</p>
+
+    <h3>11.1 ARP, RARP, ICMP</h3>
+    <table>
+      <tr><th>Protocole</th><th>Rôle (en une phrase)</th></tr>
+      <tr><td><b>ARP</b> (Address Resolution)</td><td>Trouver l'adresse <b>MAC</b> correspondant à une adresse <b>IP</b> (IP → MAC). Envoie une requête à tout le LAN, la bonne machine répond.</td></tr>
+      <tr><td><b>RARP</b> (Reverse ARP)</td><td>L'inverse : trouver son <b>IP</b> à partir de sa <b>MAC</b> (utile pour une machine sans disque qui démarre).</td></tr>
+      <tr><td><b>ICMP</b></td><td>Messages d'<b>erreur</b> et de contrôle (ex. <b>ping</b>). Voyage dans des datagrammes IP. Un message d'erreur ICMP contient l'en-tête IP + les 8 premiers octets du datagramme fautif.</td></tr>
+    </table>
+
+    <h3>11.2 TCP vs UDP <span style="font-size:13px;color:var(--exam)">🎯 question quasi systématique</span></h3>
+    <table>
+      <tr><th></th><th>TCP</th><th>UDP</th></tr>
+      <tr><td>Connexion</td><td><b>Mode connecté</b> (établit une connexion)</td><td><b>Sans connexion</b></td></tr>
+      <tr><td>Fiabilité</td><td><b>Fiable</b> : ACK, retransmission, ordre garanti</td><td>Non fiable : pas d'ACK, pas d'ordre</td></tr>
+      <tr><td>Contrôle de flux</td><td>Oui (fenêtre/crédit)</td><td>Non</td></tr>
+      <tr><td>Vitesse / surcharge</td><td>Plus lourd</td><td>Léger et rapide</td></tr>
+      <tr><td>Usage</td><td>Gros transferts fiables (web, mail, fichiers)</td><td>Petits envois rapides (DNS, voix, temps réel)</td></tr>
+    </table>
+    <div class="box simple"><div class="bt">💡 Image</div>
+      <b>TCP</b> = lettre recommandée avec accusé de réception (on est sûr que ça arrive, dans l'ordre). <b>UDP</b> = carte postale jetée dans la boîte (rapide, mais aucune garantie).</div>
+
+    <h3>11.3 L'en-tête TCP & les ports <span style="font-size:13px;color:var(--exam)">🎯 (analyse 2017)</span></h3>
+    <p>TCP identifie les applications par des <b>ports</b> (16 bits). Le triplet (@IP, protocole, n° de port) identifie un processus sur le réseau.</p>
+    <table>
+      <tr><th>Port</th><th>Service</th></tr>
+      <tr><td>21</td><td>FTP (transfert de fichiers)</td></tr>
+      <tr><td>23</td><td>Telnet (connexion à distance)</td></tr>
+      <tr><td>25</td><td>SMTP (mail)</td></tr>
+      <tr><td>53</td><td>DNS (noms de domaine)</td></tr>
+      <tr><td>80</td><td>HTTP (web)</td></tr>
+    </table>
+    <div class="box exam"><div class="bt">🎯 Les drapeaux TCP (bits de code)</div>
+      <ul>
+        <li><b>URG</b> : données urgentes (le pointeur urgent est valide).</li>
+        <li><b>ACK</b> : le champ accusé de réception est valide.</li>
+        <li><b>PSH</b> (Push) : remettre les données <b>tout de suite</b> à l'application sans attendre que le buffer soit plein.</li>
+        <li><b>RST</b> : réinitialiser/détruire la connexion. <b>SYN</b> : ouverture. <b>FIN</b> : fermeture.</li>
+      </ul>
+      Le champ <b>Crédit / fenêtre</b> = combien d'octets on est prêt à recevoir. <span style="color:var(--trap)">Si fenêtre = 0 → l'autre ne peut PLUS envoyer (récepteur saturé)</span> — piège classique de 2017.</div>
+    <div class="box worked"><div class="bt">✏️ Extrait du corrigé 2017 (analyse de paquet)</div>
+      <ul>
+        <li>TTL va passer à 0 → le routeur <b>détruit</b> le paquet.</li>
+        <li>MF = 0 et Offset = 0 → <b>pas un fragment</b>.</li>
+        <li>Longueur données = Long. totale − en-tête IP − en-tête TCP = 256 − 20 − 24 = <b>212 octets</b>.</li>
+        <li>Port destination = 80 → application <b>Web</b>, le destinataire est un <b>serveur web</b>.</li>
+        <li>Fenêtre de l'émetteur = 0 → le destinataire <b>ne pourra pas</b> lui renvoyer de données.</li>
+        <li>Drapeau P (PSH) = 1 → données remises à l'application sans attendre.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============ RECETTES ============ -->
+  <section id="recettes" class="chap">
+    <h2><span class="num">🍳</span> Recettes d'exercices (anti-panique)</h2>
+    <p class="lead">Les « modes d'emploi » des exercices qui tombent. Quand tu vois le type d'exo, applique la recette les yeux fermés.</p>
+
+    <details open class="solution"><summary>Recette 1 — Multiplexage temporel + Modulation</summary>
+      <div class="inner">
+        <ol>
+          <li>Lire le signal → compter amplitudes × phases × fréquences = <b>V</b>. Puis <b>n = log₂V</b>.</li>
+          <li><b>Rmux</b> = Débit_HV / n &nbsp;<i>ou</i>&nbsp; Σ Rᵢ. Si voies identiques : Rmux = nb_voies × Rᵢ.</li>
+          <li><b>Δmux</b> = 1/Rmux. <b>Quantum</b> Q selon l'énoncé (1 état → Q=Δmux ; 1,5 état → 1,5·Δmux).</li>
+          <li>Taille buffer = (nb d'états par quantum) × n bits.</li>
+          <li>Découper la séquence HV par paquets de n bits, distribuer à PC1, PC2… dans l'ordre, recommencer à chaque scrutation.</li>
+          <li>Dessiner les signaux demandés (Manchester, etc.) proprement.</li>
+        </ol>
+      </div>
+    </details>
+
+    <details class="solution"><summary>Recette 2 — Sous-réseaux : trouver @réseau / broadcast / hôtes</summary>
+      <div class="inner">
+        <ol>
+          <li>Écris le <b>masque</b> /n en décimal. Repère l'octet « intéressant » (ni 255 ni 0).</li>
+          <li><b>Pas</b> = 256 − (valeur du masque dans cet octet).</li>
+          <li><b>@réseau</b> = plus grand multiple du pas ≤ valeur de l'IP dans cet octet (octets suivants = 0).</li>
+          <li><b>broadcast</b> = @réseau + pas − 1 (octets suivants = 255).</li>
+          <li><b>1ᵉʳ hôte</b> = @réseau + 1 ; <b>dernier hôte</b> = broadcast − 1.</li>
+          <li><b>Nb hôtes</b> = 2^(bits hôte) − 2.</li>
+        </ol>
+      </div>
+    </details>
+
+    <details class="solution"><summary>Recette 3 — Plan d'adressage d'une entreprise</summary>
+      <div class="inner">
+        <ol>
+          <li>Compte les réseaux : tous les LANs <b>+ chaque liaison routeur-routeur</b>.</li>
+          <li>Bits sous-réseau : <b>s</b> tel que 2^s ≥ nb de réseaux.</li>
+          <li>Vérifie : bits hôte restants donnent assez de machines (2^h − 2 ≥ max).</li>
+          <li>Distribue les plages (0, +pas, +2·pas…) à chaque réseau.</li>
+          <li>Interfaces routeurs = 1ᵉʳ adresse utile de chaque plage (passerelle).</li>
+          <li>Donne le masque final et le tableau {réseau, masque, plage valide, broadcast}.</li>
+        </ol>
+      </div>
+    </details>
+
+    <details class="solution"><summary>Recette 4 — Fragmentation IP</summary>
+      <div class="inner">
+        <ol>
+          <li>Données du datagramme = Longueur totale − 20 (en-tête IP).</li>
+          <li>Données max/fragment = ⌊(MTU − 20)/8⌋ × 8.</li>
+          <li>Découpe : autant de fragments pleins que possible + 1 reste.</li>
+          <li>Pour chaque fragment : même <b>ID</b> ; <b>Offset</b> = (octets avant)/8 ; <b>MF</b> = 1 sauf le dernier (0).</li>
+          <li>Si plusieurs MTU le long du chemin, re-fragmente à chaque routeur qui réduit le MTU.</li>
+        </ol>
+      </div>
+    </details>
+
+    <details class="solution"><summary>Recette 5 — CRC (code polynomial)</summary>
+      <div class="inner">
+        <ol>
+          <li>Convertis le message Z et le générateur G en polynômes/bits. r = degré de G.</li>
+          <li>Ajoute r zéros à droite de Z (= Z·xʳ).</li>
+          <li>Divise par G en <b>XOR</b> (modulo 2, sans retenue) → reste <b>A(x)</b>.</li>
+          <li>Mot émis = message + A(x) (A sur exactement r bits !).</li>
+          <li>Réception : diviser le reçu par G ; reste 0 → OK, sinon erreur.</li>
+        </ol>
+      </div>
+    </details>
+
+    <details class="solution"><summary>Recette 6 — VRC/LRC (détecter ET corriger)</summary>
+      <div class="inner">
+        <ol>
+          <li>Range les caractères en lignes (matrice).</li>
+          <li>VRC : ajoute un bit par ligne pour la parité (paire en général).</li>
+          <li>LRC : ajoute une ligne de parité par colonne.</li>
+          <li>Réception : repère la <b>ligne</b> à parité fausse et la <b>colonne</b> à parité fausse.</li>
+          <li>Le bit erroné est à leur <b>intersection</b> → inverse-le pour corriger.</li>
+        </ol>
+      </div>
+    </details>
+
+    <details class="solution"><summary>Recette 7 — Tables de routage</summary>
+      <div class="inner">
+        <ol>
+          <li>Liste tous les réseaux du schéma (LANs + liaisons).</li>
+          <li>Pour chaque routeur, pour chaque réseau : connecté ? → <b>C</b> + interface locale.</li>
+          <li>Sinon → adresse du <b>voisin</b> sur le chemin le plus court (moins de sauts).</li>
+          <li>Remplis le tableau {destination, prochain saut, interface de sortie}.</li>
+        </ol>
+      </div>
+    </details>
+  </section>
+
+  <!-- ============ ANNALES ============ -->
+  <section id="annales" class="chap">
+    <h2><span class="num">📜</span> Annales décortiquées (2017 → 2024)</h2>
+    <p class="lead">Exactement ce qui a été demandé chaque année. Regarde comme c'est répétitif : le même trio revient encadré en couleur.</p>
+    <table>
+      <tr><th>Année / Section</th><th>Exercices posés</th></tr>
+      <tr><td><b>2017-2018</b><br>ACAD</td><td>① <span style="color:var(--exam)">Multiplexage temporel + modulation + Manchester</span> · ② <span style="color:var(--brand)">Lecture datagramme IP + en-tête TCP</span> (10 sous-questions) · ③ <span style="color:var(--exam)">Interconnexion + plan d'adressage (classe C /27) + tables de routage</span></td></tr>
+      <tr><td><b>2019-2020</b><br>ACAD</td><td>① <span style="color:var(--exam)">Multiplexage synchrone (audio, V=256) : débit, Rmod, quantum, scrutations</span> · ② <span style="color:var(--exam)">Interconnexion 4 LANs + adressage 130.10.0.0 /23 + tables de routage</span> · ③ <span style="color:var(--exam)">Fragmentation IP (2500 oct, MTU 1500/1100)</span></td></tr>
+      <tr><td><b>2020-2021</b><br>ACAD B&C</td><td>① <span style="color:var(--exam)">Multiplexage temporel (V=16) + lecture signal</span> · ② <span style="color:var(--exam)">Interconnexion + adressage 155.50.0.0 + routage + fragmentation (MTU 500)</span> + <span style="color:var(--brand)">VRC/LRC (mot OSI)</span></td></tr>
+      <tr><td><b>2020-2021</b><br>ISIL</td><td>① QCM (routage, bandes de garde, CSMA/CD, encapsulation, OSI) · ② <span style="color:var(--exam)">Multiplexage + modulation (V=4 et V=2)</span> · ③ <span style="color:var(--exam)">Sous-réseaux (172.20.17.66/20, 200.200.200.130/26) + tables de routage</span></td></tr>
+      <tr><td><b>2021-2022</b><br>ACAD B&C</td><td>① <span style="color:var(--exam)">Modulation (4 phases, 2 ampl.) + multiplexage</span> · ② <span style="color:var(--exam)">Interconnexion + adressage 215.50.3.0/24 + routage + fragmentation (2309 oct)</span> · ③ <span style="color:var(--brand)">Codage en ligne (identifier + redessiner en V=8)</span></td></tr>
+      <tr><td><b>2021-2022</b><br>ISIL</td><td>① Cours : code image, NRZ + FSK, matrice H (BCH), RARP/translation/commutation/SCTP, couches · ② <span style="color:var(--exam)">Routage fixe (débit puis distance) sur graphe</span> · ③ Topologie étoile, méthodes d'accès, polling</td></tr>
+      <tr><td><b>2022-2023</b><br>ACAD A</td><td>① Cours : TCP vs UDP, REJ/SREJ · ② <span style="color:var(--brand)">HDLC : principe + diagramme d'échange (mode NRM)</span> · ③ <span style="color:var(--exam)">Plan d'adressage (3 @réseau, serveur web public)</span> + bonus débit image</td></tr>
+      <tr><td><b>2022-2023</b><br>ACAD B</td><td>① <span style="color:var(--exam)">Multiplexage temporel + modulation</span> · ② <span style="color:var(--brand)">CRC code polynomial C(8,2) : G(x), circuit, coder 1011, matrices</span> · ③ <span style="color:var(--exam)">Topologie depuis « show ip route » + adressage + routage + fragmentation</span></td></tr>
+      <tr><td><b>2022-2023</b><br>ISIL</td><td>① QCM (trames, paquet réseau, classe A, CSMA/CD, duplex) · ② <span style="color:var(--brand)">Hamming + matrice VRC/LRC</span> · ③ <span style="color:var(--exam)">Modulation + multiplexage + débit + multiplexage fréquentiel</span> · ④ <span style="color:var(--exam)">Sous-réseaux (192.168.10.0/25, 180.180.160.0/20) + tables de routage</span></td></tr>
+      <tr><td><b>2023-2024</b><br>ACAD A</td><td>① Cours : couches OSI + rôles, perturbations, transmission analog/num, datagramme IP · ② <span style="color:var(--brand)">CRC : circuit, G(x), coder 1101</span> · ③ <span style="color:var(--exam)">Modulation (2 phases 2 fréq) + valence</span> + <span style="color:var(--brand)">temps émission/transfert (satellite)</span></td></tr>
+      <tr><td><b>2023-2024</b><br>ACAD B&C</td><td>① <span style="color:var(--exam)">Multiplexage temporel (HV 8400 bps) + signal</span> · ② <span style="color:var(--brand)">CRC : G(x)=x³+x²+x+1, position 0–15, circuit</span> · ③ <span style="color:var(--exam)">Interconnexion 4 LANs + adressage 140.10.240.0/20 + routage + fragmentation (2 datagrammes, MTU 900)</span></td></tr>
+    </table>
+    <div class="box exam"><div class="bt">🎯 Conclusion de l'analyse</div>
+      Sur <b>11 sujets</b>, l'adressage/sous-réseaux apparaît <b>~10 fois</b>, le multiplexage+modulation <b>~9 fois</b>, le routage <b>~8 fois</b>, la fragmentation <b>~6 fois</b>, la détection d'erreurs <b>~6 fois</b>. <b>Bosse ces 5-là à fond et tu couvres l'immense majorité des points.</b></div>
+  </section>
+
+  <!-- ============ FLASHCARDS ============ -->
+  <section id="flashcards" class="chap">
+    <h2><span class="num">🃏</span> Révision express (la veille de l'examen)</h2>
+    <p class="lead">Les réponses qu'on te demande le plus souvent. Cache la réponse, teste-toi.</p>
+    <details><summary>Distances LAN / MAN / WAN ?</summary><div class="inner">LAN 10 m–1 km · MAN 10–100 km (ville) · WAN 100–1000 km (pays).</div></details>
+    <details><summary>Ordre des 7 couches OSI (1→7) ?</summary><div class="inner">Physique · Liaison · Réseau · Transport · Session · Présentation · Application.</div></details>
+    <details><summary>Quel équipement à quelle couche ?</summary><div class="inner">Répéteur/Hub = 1 · Pont/Switch = 2 · Routeur = 3 · Passerelle = 7 couches.</div></details>
+    <details><summary>Relier 2 réseaux à méthodes d'accès différentes ?</summary><div class="inner">Un <b>routeur</b> (couche 3).</div></details>
+    <details><summary>V, n, R, D ?</summary><div class="inner">V = nb d'états · n = log₂V (bits/état) · R = 1/Δ (bauds) · D = n×R (bits/s).</div></details>
+    <details><summary>Valence si 2 amplitudes, 2 phases, 4 fréquences ?</summary><div class="inner">V = 2×2×4 = 16, donc n = 4 bits/état.</div></details>
+    <details><summary>Bandes de garde pour n canaux (multiplexage fréquentiel) ?</summary><div class="inner">n − 1.</div></details>
+    <details><summary>Manchester : 1 et 0 ?</summary><div class="inner">Transition au milieu de chaque bit. Front descendant = 1, montant = 0 (convention USTHB). Utilisé par Ethernet.</div></details>
+    <details><summary>Dmin = 2d+1 permet quoi ?</summary><div class="inner">Détecter 2d erreurs, corriger d.</div></details>
+    <details><summary>CRC : que fait-on du message avant division ?</summary><div class="inner">On le multiplie par xʳ (ajoute r zéros), on divise par G(x) en XOR, le reste A(x) est collé à la fin.</div></details>
+    <details><summary>Classes IP par 1ᵉʳ octet ?</summary><div class="inner">A 1–126 · B 128–191 · C 192–223 · D 224–239 (multicast) · E 240–255.</div></details>
+    <details><summary>Masques par défaut A/B/C ?</summary><div class="inner">/8 (255.0.0.0) · /16 (255.255.0.0) · /24 (255.255.255.0).</div></details>
+    <details><summary>Nb d'hôtes utilisables avec h bits ?</summary><div class="inner">2^h − 2 (on retire @réseau et broadcast).</div></details>
+    <details><summary>172.20.17.66/20 → @réseau et broadcast ?</summary><div class="inner">Masque 255.255.240.0, pas 16 → @réseau 172.20.16.0, broadcast 172.20.31.255.</div></details>
+    <details><summary>Fragmentation : données max/fragment et offset ?</summary><div class="inner">⌊(MTU−20)/8⌋×8 octets ; Offset = (octets avant)/8 ; MF=1 sauf dernier.</div></details>
+    <details><summary>Numéros de protocole IP ?</summary><div class="inner">1 = ICMP, 6 = TCP, 17 = UDP.</div></details>
+    <details><summary>Ports célèbres ?</summary><div class="inner">21 FTP · 23 Telnet · 25 SMTP · 53 DNS · 80 HTTP.</div></details>
+    <details><summary>TCP vs UDP en un mot ?</summary><div class="inner">TCP = connecté, fiable, ordonné, lourd. UDP = sans connexion, rapide, non fiable.</div></details>
+    <details><summary>Trame HDLC : fanion et FCS ?</summary><div class="inner">Fanion 01111110 ; FCS = CRC 16 bits par x¹⁶+x¹²+x⁵+1.</div></details>
+    <details><summary>REJ vs SREJ ?</summary><div class="inner">REJ = retransmet TOUT à partir de N(R) ; SREJ = retransmet SEULEMENT la trame N(R).</div></details>
+    <details><summary>Que fait CSMA/CD après une collision ?</summary><div class="inner">Envoie un jam (32 bits), puis attend un temps aléatoire (backoff) avant de réémettre.</div></details>
+    <details><summary>Adresse MAC : taille ?</summary><div class="inner">48 bits = 6 octets, en hexadécimal.</div></details>
+    <details><summary>Rôle de ARP ?</summary><div class="inner">Trouver l'adresse MAC à partir d'une adresse IP (IP → MAC).</div></details>
+  </section>
+
+  <!-- ============ CHECKLIST ============ -->
+  <section id="checklist" class="chap">
+    <h2><span class="num">✅</span> Checklist finale avant l'examen</h2>
+    <p class="lead">Coche mentalement. Si tu sais faire tout ça, tu es prêt(e).</p>
+    <div class="grid2">
+      <div class="box exam"><div class="bt">🎯 Je sais faire (obligatoire)</div>
+        <ul>
+          <li>Trouver @réseau, masque, 1ᵉʳ/dernier hôte, broadcast d'une IP /n</li>
+          <li>Concevoir un plan d'adressage (sous-réseaux + liaisons + interfaces)</li>
+          <li>Remplir une table de routage</li>
+          <li>Calculer V, n, Rmux, quantum et extraire les messages d'un multiplexage</li>
+          <li>Identifier les modulations (ASK/FSK/PSK) et la valence depuis un signal</li>
+          <li>Fragmenter un datagramme (ID, Offset, MF) avec un MTU donné</li>
+          <li>Faire une division CRC en XOR / une matrice VRC-LRC</li>
+        </ul>
+      </div>
+      <div class="box simple"><div class="bt">💡 Bon à savoir (sécurise des points)</div>
+        <ul>
+          <li>Rôles des 7 couches OSI + équipement par couche</li>
+          <li>TCP vs UDP, drapeaux TCP, ports célèbres</li>
+          <li>Trame HDLC, types I/S/U, REJ/SREJ</li>
+          <li>CSMA/CD vs Token Ring (probabiliste vs déterministe)</li>
+          <li>Normes Ethernet (10Base2/5, 100BaseTX/FX, FDDI)</li>
+          <li>Codage Manchester ; classes IP ; adresses particulières</li>
+          <li>Nyquist / Shannon ; temps transmission + propagation</li>
+        </ul>
+      </div>
+    </div>
+    <div class="box trap"><div class="bt">⚠️ Les 3 réflexes qui sauvent des points</div>
+      <ol>
+        <li><b>Justifie tout</b> (formule + calcul). Réponse non justifiée = 0.</li>
+        <li><b>Compte les liaisons routeur-routeur</b> comme des réseaux dans le plan d'adressage.</li>
+        <li><b>Vérifie tes masques et offsets</b> à la fin : ce sont les fautes bêtes les plus fréquentes.</li>
+      </ol>
+    </div>
+    <p style="text-align:center;font-size:18px;margin-top:24px">Tu connais maintenant le module <b>et</b> la stratégie. Révise les 5 thèmes chauds, fais 2-3 annales en conditions réelles, et c'est dans la poche. 🍀</p>
+  </section>
+
+  </div><!-- /content -->
+  <div class="footer">
+    Fait pour toi à partir de tes propres cours, résumés et annales (USTHB · Réseaux L3).<br>
+    Bonne révision — tu vas y arriver. 💪
+  </div>
+</main>
+</div>
+
+<script>
+  // reading progress
+  const bar=document.getElementById('progress');
+  const links=[...document.querySelectorAll('nav#toc a')];
+  const ids=links.map(a=>a.getAttribute('href').slice(1));
+  function onScroll(){
+    const h=document.documentElement;
+    const sc=h.scrollTop,max=h.scrollHeight-h.clientHeight;
+    bar.style.width=(max>0?sc/max*100:0)+'%';
+    // scrollspy
+    let cur=ids[0];
+    for(const id of ids){const el=document.getElementById(id);if(el&&el.getBoundingClientRect().top<160)cur=id;}
+    links.forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+cur));
+  }
+  document.addEventListener('scroll',onScroll,{passive:true});
+  window.addEventListener('load',onScroll);
+</script>
+</body>
+</html>

@@ -1,0 +1,7 @@
+# Working/scratch files (rendered exam PNGs, extracted text, helper script)
+_extract/
+
+# OS junk
+Thumbs.db
+desktop.ini
+.DS_Store
