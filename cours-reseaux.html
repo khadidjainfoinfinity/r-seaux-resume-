@@ -1038,7 +1038,7 @@
   <!-- ============ ANNALES CHAP 9 ============ -->
   <section id="exos9" class="chap">
     <h2><span class="num">📝</span> Annales — spécial Chapitre 9 (Adressage IP)</h2>
-    <p class="lead">3 exercices d'examens réels qui, <b>ensemble, couvrent TOUT le Chapitre 9</b> : décoder une IP (masque, @réseau, hôtes, broadcast), concevoir un plan d'adressage complet, et remplir les tables de routage. La <b>question est l'image du sujet original</b> (non réécrite) ; dessous, ma <b>solution expliquée pas-à-pas</b>. Clique une image pour l'agrandir, ou ouvre le PDF d'origine.</p>
+    <p class="lead">3 exercices d'examens réels qui, <b>ensemble, couvrent TOUT le Chapitre 9</b> : décoder une IP (masque, @réseau, hôtes, broadcast), concevoir un plan d'adressage complet, et remplir les tables de routage. <b>Les réponses écrites en rouge sur les scans ont été effacées</b> → tu as un <b>sujet vierge</b> pour t'entraîner. La <b>solution est repliée par défaut</b> : essaie d'abord, puis clique « ✅ Solution » pour vérifier (le corrigé original s'y trouve aussi). Clique une image pour l'agrandir.</p>
 
     <div class="box exam"><div class="bt">🎯 Pourquoi ces 3-là ?</div>
       <ul>
@@ -1053,11 +1053,13 @@
     <div class="exam-card">
       <h3>① 2020-2021 — ISIL B — Exercice 3</h3>
       <div class="meta"><span class="pts">8 points</span><span>Décodage IP /20 & /26</span><span>Même réseau ?</span><span>Tables de routage</span></div>
-      <p><b>📄 La question (sujet original, corrigé en rouge) :</b></p>
-      <img class="examshot" src="annales-img/2020isil_p2.png" alt="Sujet 2020 ISIL Exercice 3" loading="lazy">
+      <p><b>📄 La question (sujet vierge — réponses masquées, à toi de jouer ✏️) :</b></p>
+      <img class="examshot" src="annales-img/2020isil_p2_clean.png" alt="Sujet 2020 ISIL Exercice 3 (vierge)" loading="lazy">
       <a class="pdf-link" href="R%C3%89SEAUX%20exams/2020%20-%202021/ISIL/Sujet%20ISIL%20B%20%2B%20corrig%C3%A9_.pdf" target="_blank">📎 Ouvrir le PDF original</a>
 
-      <details open class="solution"><summary>✅ Solution expliquée pas-à-pas</summary><div class="inner">
+      <details class="solution"><summary>✅ Solution expliquée pas-à-pas (clique pour révéler)</summary><div class="inner">
+        <p style="color:var(--soft);font-style:italic">📌 Le corrigé manuscrit original (réponses en rouge) — pour comparer après avoir essayé :</p>
+        <img class="examshot" src="annales-img/2020isil_p2.png" alt="Corrigé 2020 ISIL Ex3" loading="lazy">
         <h4>Q1 — Tableau pour 172.20.17.66 /20</h4>
         <ul>
           <li><b>Masque /20</b> : 20 bits à 1 = 8 + 8 + 4 → le 3ᵉ octet = <code>11110000</code> = <b>240</b>. Donc masque = <b>255.255.240.0</b>.</li>
@@ -1098,13 +1100,13 @@
     <div class="exam-card">
       <h3>② 2017-2018 — ACAD — Exercice 3</h3>
       <div class="meta"><span class="pts">7 points</span><span>Plan d'adressage (1 classe C)</span><span>Interconnexion</span><span>Tables de routage</span></div>
-      <p><b>📄 La question (sujet original) — l'énoncé est en bas de la page 1 :</b></p>
+      <p><b>📄 La question (sujet vierge — aucun corrigé écrit dessus) — l'énoncé est en bas de la page 1 :</b></p>
       <img class="examshot" src="annales-img/2017_p1.png" alt="Sujet 2017 page 1" loading="lazy">
       <img class="examshot" src="annales-img/2017_p2.png" alt="Sujet 2017 page 2" loading="lazy">
       <a class="pdf-link" href="R%C3%89SEAUX%20exams/2017%20-%202018/Sujet.pdf" target="_blank">📎 Sujet PDF</a>
       <a class="pdf-link" href="R%C3%89SEAUX%20exams/2017%20-%202018/Corrig%C3%A9.pdf" target="_blank">📎 Corrigé officiel PDF</a>
 
-      <details open class="solution"><summary>✅ Solution expliquée pas-à-pas</summary><div class="inner">
+      <details class="solution"><summary>✅ Solution expliquée pas-à-pas (clique pour révéler)</summary><div class="inner">
         <p><b>Énoncé :</b> 5 réseaux physiques (10Base5, 100BaseTX, 10Base2, 100BaseFX, FDDI), ~30 machines chacun, reliés par 3 routeurs ; on veut <b>une seule adresse réseau</b> pour tout le site.</p>
         <h4>Étape 1 — Compter les réseaux à adresser</h4>
         <p>5 LANs <b>+ 1 liaison point-à-point</b> R1–R3 (la liaison série entre 2 routeurs = un réseau à part entière, à ne pas oublier !) = <b>6 réseaux</b>.</p>
@@ -1141,12 +1143,15 @@
     <div class="exam-card">
       <h3>③ 2022-2023 — ISIL B — Exercice 4 (Q4 & Q5)</h3>
       <div class="meta"><span class="pts">8 points</span><span>Hôtes valides</span><span>Broadcast</span><span>Multicast</span><span>Routage & panne</span></div>
-      <p><b>📄 La question (sujet original, corrigé en rouge) :</b></p>
-      <img class="examshot" src="annales-img/2022isil_p4.png" alt="Sujet 2022 ISIL Exercice 4 page 1" loading="lazy">
-      <img class="examshot" src="annales-img/2022isil_p5.png" alt="Sujet 2022 ISIL Exercice 4 page 2" loading="lazy">
+      <p><b>📄 La question (sujet vierge — réponses masquées, à toi de jouer ✏️) :</b></p>
+      <img class="examshot" src="annales-img/2022isil_p4_clean.png" alt="Sujet 2022 ISIL Exercice 4 page 1 (vierge)" loading="lazy">
+      <img class="examshot" src="annales-img/2022isil_p5_clean.png" alt="Sujet 2022 ISIL Exercice 4 page 2 (vierge)" loading="lazy">
       <a class="pdf-link" href="R%C3%89SEAUX%20exams/2022%20-%202023/ISIL/Corrig%C3%A9.pdf" target="_blank">📎 Ouvrir le corrigé PDF</a>
 
-      <details open class="solution"><summary>✅ Solution expliquée pas-à-pas</summary><div class="inner">
+      <details class="solution"><summary>✅ Solution expliquée pas-à-pas (clique pour révéler)</summary><div class="inner">
+        <p style="color:var(--soft);font-style:italic">📌 Le corrigé original (réponses en rouge) — pour comparer après avoir essayé :</p>
+        <img class="examshot" src="annales-img/2022isil_p4.png" alt="Corrigé 2022 ISIL p4" loading="lazy">
+        <img class="examshot" src="annales-img/2022isil_p5.png" alt="Corrigé 2022 ISIL p5" loading="lazy">
         <h4>Q5 — LAN1 = 180.180.160.0 /20</h4>
         <ul>
           <li>/20 = 255.255.<b>240</b>.0 → <b>bloc = 16</b> (3ᵉ octet). 160 est déjà un multiple de 16 → <b>@réseau = 180.180.160.0</b>.</li>
@@ -1177,7 +1182,7 @@
     </div>
 
     <div class="box simple"><div class="bt">💡 Conseil d'entraînement</div>
-      Cache ma solution (referme la flèche ▸), <b>fais l'exercice toi-même sur papier</b> à partir de l'image, puis compare. C'est en faisant à la main que ça rentre. Vise : les 3 exercices en ~1h, comme à l'examen.</div>
+      Les sujets ci-dessus sont <b>vierges</b> (réponses effacées) et la solution est <b>repliée</b>. <b>Fais l'exercice sur papier</b> à partir de l'image, puis ouvre « ✅ Solution » pour comparer (mon explication <i>et</i> le corrigé original). C'est en faisant à la main que ça rentre. Vise les 3 exercices en ~1h, comme à l'examen.</div>
   </section>
 
   <!-- ============ RECETTES ============ -->
