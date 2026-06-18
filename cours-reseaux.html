@@ -789,6 +789,86 @@
       </table>
       Logique : R1 atteint ses 3 réseaux directement ; pour 141.25.0.0 (derrière R2), il passe par R2 via le réseau partagé 140.25.0.0.</div>
 
+    <div class="box simple"><div class="bt">💡 Que veulent dire les 3 colonnes ?</div>
+      Pour <b>chaque routeur</b>, tu remplis une ligne <b>par réseau</b> du schéma :
+      <table>
+        <tr><th>Colonne</th><th>La question à laquelle elle répond</th></tr>
+        <tr><td><b>Réseau destination</b></td><td>Quel réseau je veux atteindre ?</td></tr>
+        <tr><td><b>Prochain saut</b></td><td>À qui je donne le paquet ? → <b>« C »</b> si je suis <i>directement connecté</i>, sinon l'<b>IP du routeur voisin</b> sur le chemin le plus court.</td></tr>
+        <tr><td><b>Interface de sortie</b></td><td>Par <b>laquelle de MES interfaces</b> le paquet part ?</td></tr>
+      </table>
+    </div>
+
+    <div class="box worked"><div class="bt">✏️ Exemple A — 2 routeurs (le plus simple)</div>
+      <pre class="topo"> LAN A                    lien                     LAN B
+192.168.1.0 ── R1 ── 192.168.2.0 ── R2 ── 192.168.3.0
+            .1     .1          .2     .1</pre>
+      R1 : interfaces 192.168.1.1 et 192.168.2.1 — R2 : 192.168.2.2 et 192.168.3.1.
+      <div class="grid2">
+        <div><b>Table de R1</b>
+        <table class="mono"><tr><th>Réseau</th><th>Saut</th><th>Sortie</th></tr>
+        <tr><td>192.168.1.0</td><td>C</td><td>192.168.1.1</td></tr>
+        <tr><td>192.168.2.0</td><td>C</td><td>192.168.2.1</td></tr>
+        <tr><td>192.168.3.0</td><td>192.168.2.2 (R2)</td><td>192.168.2.1</td></tr></table></div>
+        <div><b>Table de R2</b>
+        <table class="mono"><tr><th>Réseau</th><th>Saut</th><th>Sortie</th></tr>
+        <tr><td>192.168.3.0</td><td>C</td><td>192.168.3.1</td></tr>
+        <tr><td>192.168.2.0</td><td>C</td><td>192.168.2.2</td></tr>
+        <tr><td>192.168.1.0</td><td>192.168.2.1 (R1)</td><td>192.168.2.2</td></tr></table></div>
+      </div>
+      R1 connaît son LAN et le lien <b>directement (C)</b> ; pour le LAN B (loin), il passe par R2.</div>
+
+    <div class="box worked"><div class="bt">✏️ Exemple B — 3 routeurs en ligne (la leçon clé)</div>
+      <pre class="topo"> LAN1            L12            L23            LAN3
+10.0.1.0 ─ R1 ─ 10.0.12.0 ─ R2 ─ 10.0.23.0 ─ R3 ─ 10.0.3.0
+        .1   .1         .2  │ .2          .3   .1
+                       LAN2 = 10.0.2.0 (.1 sur R2)</pre>
+      <div class="grid2">
+        <div><b>Table de R2</b> (au milieu)
+        <table class="mono"><tr><th>Réseau</th><th>Saut</th><th>Sortie</th></tr>
+        <tr><td>10.0.2.0 (LAN2)</td><td>C</td><td>10.0.2.1</td></tr>
+        <tr><td>10.0.12.0</td><td>C</td><td>10.0.12.2</td></tr>
+        <tr><td>10.0.23.0</td><td>C</td><td>10.0.23.2</td></tr>
+        <tr><td>10.0.1.0 (LAN1)</td><td>10.0.12.1 (R1)</td><td>10.0.12.2</td></tr>
+        <tr><td>10.0.3.0 (LAN3)</td><td>10.0.23.3 (R3)</td><td>10.0.23.2</td></tr></table></div>
+        <div><b>Table de R1</b> (bout de la chaîne)
+        <table class="mono"><tr><th>Réseau</th><th>Saut</th><th>Sortie</th></tr>
+        <tr><td>10.0.1.0 (LAN1)</td><td>C</td><td>10.0.1.1</td></tr>
+        <tr><td>10.0.12.0</td><td>C</td><td>10.0.12.1</td></tr>
+        <tr><td>10.0.2.0</td><td>10.0.12.2 (R2)</td><td>10.0.12.1</td></tr>
+        <tr><td>10.0.23.0</td><td>10.0.12.2 (R2)</td><td>10.0.12.1</td></tr>
+        <tr><td>10.0.3.0</td><td>10.0.12.2 (R2)</td><td>10.0.12.1</td></tr></table></div>
+      </div>
+      🔑 Un routeur au <b>bout d'une chaîne</b> envoie <b>tous les réseaux lointains à son unique voisin</b> (même prochain saut répété). R3 est le miroir : tout ce qui est loin → 10.0.23.2 (R2).</div>
+
+    <div class="box worked"><div class="bt">✏️ Exemple C — triangle (quand il y a un CHOIX → le moins de sauts)</div>
+      <pre class="topo">        LAN1 (172.16.1.0)
+              |
+             R1
+           /    \
+   172.16.12.0  172.16.13.0
+        /          \
+      R2 ──172.16.23.0── R3
+      |                  |
+ LAN2 172.16.2.0    LAN3 172.16.3.0</pre>
+      Chaque routeur a 2 chemins vers les autres. Règle : <b>le moins de sauts</b>. <b>Table de R1</b> — pour LAN2, aller <b>droit à R2</b> (1 saut) plutôt que R1→R3→R2 (2 sauts) :
+      <table class="mono"><tr><th>Réseau</th><th>Saut</th><th>Sortie</th></tr>
+        <tr><td>172.16.1.0 (LAN1)</td><td>C</td><td>172.16.1.1</td></tr>
+        <tr><td>172.16.12.0</td><td>C</td><td>172.16.12.1</td></tr>
+        <tr><td>172.16.13.0</td><td>C</td><td>172.16.13.1</td></tr>
+        <tr><td>172.16.2.0 (LAN2)</td><td>172.16.12.2 (R2, direct)</td><td>172.16.12.1</td></tr>
+        <tr><td>172.16.3.0 (LAN3)</td><td>172.16.13.3 (R3, direct)</td><td>172.16.13.1</td></tr></table>
+      Leçon : si deux routes mènent à la destination, choisis le <b>voisin le plus proche</b> (1 saut). <i>(Le lien 172.16.23.0 est à 1 saut via R2 ou R3 — égalité, l'un ou l'autre est juste.)</i></div>
+
+    <div class="box exam"><div class="bt">🎯 Les réflexes à retenir</div>
+      <ol>
+        <li><b>Une ligne par réseau</b>, pour chaque routeur.</li>
+        <li><b>Directement branché ? → C</b> + ton interface locale.</li>
+        <li><b>Loin ? → prochain saut = l'IP du routeur voisin</b> sur le chemin le plus court ; <b>sortie = ton interface vers ce voisin</b>.</li>
+        <li><b>Routeur en bout de chaîne →</b> tous les réseaux lointains ont le <b>même</b> prochain saut (son unique voisin).</li>
+      </ol>
+    </div>
+
     <h3>8.3 Algorithmes de routage (juste les noms)</h3>
     <table>
       <tr><th>Type</th><th>Idée</th><th>Exemple</th></tr>
