@@ -166,6 +166,7 @@
   <div class="grp">Pour cartonner</div>
   <a href="#exos9">📝 Annales spécial Chap. 9 <span class="tag hot">★</span></a>
   <a href="#blanc2026">🧪 EMD Blanc 2026 (corrigé) <span class="tag hot">NEW</span></a>
+  <a href="#exo-routage">🗺️ Exo routage à compléter <span class="tag hot">NEW</span></a>
   <a href="#recettes">🍳 Recettes d'exercices</a>
   <a href="#annales">📜 Annales décortiquées</a>
   <a href="#flashcards">🃏 Révision express</a>
@@ -1430,6 +1431,80 @@
 
     <div class="box simple"><div class="bt">💡 Comment t'en servir</div>
       Mets-toi en conditions : <b>1h30, sans regarder</b>. Fais les 3 exercices sur papier, puis ouvre chaque « ✅ Corrigé » pour te corriger. Refais celui qui t'a posé problème le lendemain.</div>
+  </section>
+
+  <!-- ============ EXO ROUTAGE ============ -->
+  <section id="exo-routage" class="chap">
+    <h2><span class="num">🗺️</span> Exo routage à compléter (entraîne-toi)</h2>
+    <p class="lead">Un schéma <b>nouveau</b> (différent des exemples du Chapitre 8). <b>Remplis les 3 tables de routage sur papier</b>, puis clique pour vérifier. C'est l'exercice qui rapporte le plus de points sûrs à l'examen.</p>
+
+    <div class="exam-card">
+      <h3>Le réseau</h3>
+      <p>Trois routeurs : <b>R1</b> est central et porte le <b>LAN1</b> ; <b>R2</b> et <b>R3</b> sont reliés à R1 et portent chacun un LAN. Les adresses des interfaces sont indiquées sur le schéma.</p>
+      <pre class="topo">                 LAN1 = 10.1.1.0/24
+                        |  (R1: 10.1.1.1)
+                      [ R1 ]
+        (10.0.12.1) ___/      \___ (10.0.13.1)
+                   /              \
+          lien 10.0.12.0/24   lien 10.0.13.0/24
+                 /                  \
+      (10.0.12.2)                    (10.0.13.3)
+            [ R2 ]                    [ R3 ]
+   (10.2.2.1) |                          | (10.3.3.1)
+     LAN2 = 10.2.2.0/24         LAN3 = 10.3.3.0/24</pre>
+
+      <p><b>Les 5 réseaux à connaître :</b> 10.1.1.0 (LAN1) · 10.2.2.0 (LAN2) · 10.3.3.0 (LAN3) · 10.0.12.0 (lien R1-R2) · 10.0.13.0 (lien R1-R3).</p>
+      <p><b>À toi :</b> complète les colonnes <b>Saut</b> (C ou IP du voisin) et <b>Sortie</b> (ton interface) pour chaque routeur.</p>
+
+      <div class="grid2">
+        <div><b>Table de R1</b>
+        <table class="mono"><tr><th>Réseau</th><th>Saut</th><th>Sortie</th></tr>
+        <tr><td>10.1.1.0 (LAN1)</td><td>?</td><td>?</td></tr>
+        <tr><td>10.0.12.0</td><td>?</td><td>?</td></tr>
+        <tr><td>10.0.13.0</td><td>?</td><td>?</td></tr>
+        <tr><td>10.2.2.0 (LAN2)</td><td>?</td><td>?</td></tr>
+        <tr><td>10.3.3.0 (LAN3)</td><td>?</td><td>?</td></tr></table></div>
+        <div><b>Table de R2</b>
+        <table class="mono"><tr><th>Réseau</th><th>Saut</th><th>Sortie</th></tr>
+        <tr><td>10.2.2.0 (LAN2)</td><td>?</td><td>?</td></tr>
+        <tr><td>10.0.12.0</td><td>?</td><td>?</td></tr>
+        <tr><td>10.1.1.0 (LAN1)</td><td>?</td><td>?</td></tr>
+        <tr><td>10.0.13.0</td><td>?</td><td>?</td></tr>
+        <tr><td>10.3.3.0 (LAN3)</td><td>?</td><td>?</td></tr></table></div>
+      </div>
+      <p><b>Table de R3</b> : à faire aussi (5 lignes, même principe que R2).</p>
+
+      <details class="solution"><summary>✅ Solution (clique pour vérifier)</summary><div class="inner">
+        <p><b>Astuce :</b> R1 est <b>central</b> → il atteint chaque LAN éloigné via son routeur. R2 et R3 sont des <b>feuilles</b> (un seul voisin = R1) → ils envoient <b>tout ce qui est loin à R1</b>.</p>
+        <div class="grid2">
+          <div><b>Table de R1</b>
+          <table class="mono"><tr><th>Réseau</th><th>Saut</th><th>Sortie</th></tr>
+          <tr><td>10.1.1.0 (LAN1)</td><td>C</td><td>10.1.1.1</td></tr>
+          <tr><td>10.0.12.0</td><td>C</td><td>10.0.12.1</td></tr>
+          <tr><td>10.0.13.0</td><td>C</td><td>10.0.13.1</td></tr>
+          <tr><td>10.2.2.0 (LAN2)</td><td>10.0.12.2 (R2)</td><td>10.0.12.1</td></tr>
+          <tr><td>10.3.3.0 (LAN3)</td><td>10.0.13.3 (R3)</td><td>10.0.13.1</td></tr></table></div>
+          <div><b>Table de R2</b> (feuille → tout loin via R1)
+          <table class="mono"><tr><th>Réseau</th><th>Saut</th><th>Sortie</th></tr>
+          <tr><td>10.2.2.0 (LAN2)</td><td>C</td><td>10.2.2.1</td></tr>
+          <tr><td>10.0.12.0</td><td>C</td><td>10.0.12.2</td></tr>
+          <tr><td>10.1.1.0 (LAN1)</td><td>10.0.12.1 (R1)</td><td>10.0.12.2</td></tr>
+          <tr><td>10.0.13.0</td><td>10.0.12.1 (R1)</td><td>10.0.12.2</td></tr>
+          <tr><td>10.3.3.0 (LAN3)</td><td>10.0.12.1 (R1)</td><td>10.0.12.2</td></tr></table></div>
+        </div>
+        <p><b>Table de R3</b> (le miroir de R2 → tout loin via R1) :</p>
+        <table class="mono"><tr><th>Réseau</th><th>Saut</th><th>Sortie</th></tr>
+        <tr><td>10.3.3.0 (LAN3)</td><td>C</td><td>10.3.3.1</td></tr>
+        <tr><td>10.0.13.0</td><td>C</td><td>10.0.13.3</td></tr>
+        <tr><td>10.1.1.0 (LAN1)</td><td>10.0.13.1 (R1)</td><td>10.0.13.3</td></tr>
+        <tr><td>10.0.12.0</td><td>10.0.13.1 (R1)</td><td>10.0.13.3</td></tr>
+        <tr><td>10.2.2.0 (LAN2)</td><td>10.0.13.1 (R1)</td><td>10.0.13.3</td></tr></table>
+        <p><b>Le point clé :</b> R2 atteint le LAN3 (et inversement) <b>en passant par R1</b> — les deux feuilles ne sont pas reliées directement. C'est R1, au centre, qui relie tout le monde.</p>
+      </div></details>
+    </div>
+
+    <div class="box simple"><div class="bt">💡 Pour aller plus loin</div>
+      Quand tu maîtrises celui-ci, refais-le en changeant les adresses, ou ajoute un 4ᵉ routeur. Et compare ta méthode avec les 3 exemples du <a href="#c8">Chapitre 8 §8.2</a>.</div>
   </section>
 
   <!-- ============ RECETTES ============ -->
