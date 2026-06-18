@@ -167,6 +167,7 @@
   <a href="#exos9">📝 Annales spécial Chap. 9 <span class="tag hot">★</span></a>
   <a href="#blanc2026">🧪 EMD Blanc 2026 (corrigé) <span class="tag hot">NEW</span></a>
   <a href="#exo-routage">🗺️ Exo routage à compléter <span class="tag hot">NEW</span></a>
+  <a href="#cc-mux">⚡ Crash Multiplexage+Modulation <span class="tag hot">NEW</span></a>
   <a href="#recettes">🍳 Recettes d'exercices</a>
   <a href="#annales">📜 Annales décortiquées</a>
   <a href="#flashcards">🃏 Révision express</a>
@@ -1505,6 +1506,115 @@
 
     <div class="box simple"><div class="bt">💡 Pour aller plus loin</div>
       Quand tu maîtrises celui-ci, refais-le en changeant les adresses, ou ajoute un 4ᵉ routeur. Et compare ta méthode avec les 3 exemples du <a href="#c8">Chapitre 8 §8.2</a>.</div>
+  </section>
+
+  <!-- ============ CRASH MUX ============ -->
+  <section id="cc-mux" class="chap">
+    <h2><span class="num">⚡</span> Crash-course : Multiplexage + Modulation</h2>
+    <p class="lead">L'exercice <b>n°2 en points</b> (6–7 pts, dans ~9 examens sur 11). Apprends-le <b>par les exercices</b> : 6 formules, 2 exemples résolus, 1 à toi, puis des annales à refaire. Si tu as déjà l'adressage, ça + ça = la moyenne large.</p>
+
+    <div class="box formula"><div class="bt">📐 Les 6 formules (tout l'exercice tient là-dedans)</div>
+      <div class="eq">V = (nb amplitudes) × (nb phases) × (nb fréquences)  &nbsp;← valence</div>
+      <div class="eq">n = log₂(V)  &nbsp;← nombre de bits par état</div>
+      <div class="eq">D = n × R  &nbsp;(D en bits/s, R en bauds)</div>
+      <div class="eq">Mux (k lignes identiques) : R<sub>mux</sub> = k × R<sub>i</sub>  ;  D<sub>mux</sub> = n × R<sub>mux</sub></div>
+      <div class="eq">Δ = 1/R  ;  Quantum Q (donné)  ;  Scrutation Ts = k × Q</div>
+      <div class="eq">Extraire : couper la HV en paquets de n bits → distribuer PC1, PC2, PC3…</div>
+    </div>
+
+    <div class="box simple"><div class="bt">💡 3 réflexes pour LIRE un signal</div>
+      <ul>
+        <li><b>Hauteurs différentes</b> → nombre d'<b>amplitudes</b> (ASK)</li>
+        <li><b>Vitesses d'oscillation différentes</b> → nombre de <b>fréquences</b> (FSK)</li>
+        <li><b>Départ décalé / à l'envers</b> → nombre de <b>phases</b> (PSK)</li>
+      </ul>
+      Puis V = produit des trois, et n = log₂(V).</div>
+
+    <div class="box worked"><div class="bt">✏️ Exemple 1 — le cas de base</div>
+      <i>3 lignes identiques en TDM synchrone. Modulation : 2 amplitudes, 2 phases. Débit de chaque ligne = 4000 b/s. Séquence HV :</i> <span class="bits">11 00 10 01 11 00</span>
+      <ol>
+        <li><b>V</b> = 2×2 = <b>4</b> → <b>n = log₂4 = 2 bits/état</b></li>
+        <li><b>R<sub>i</sub></b> = D/n = 4000/2 = <b>2000 bauds</b> → <b>R<sub>mux</sub></b> = 3×2000 = <b>6000 bauds</b> → <b>D<sub>mux</sub></b> = 2×6000 = <b>12000 b/s</b></li>
+        <li><b>Δ<sub>mux</sub></b> = 1/6000 = <b>0,167 ms</b> ; Q (1 état) = <b>0,167 ms</b> ; <b>Ts</b> = 3×Q = <b>0,5 ms</b></li>
+        <li>États de 2 bits, distribués PC1→PC2→PC3 :<br>
+        Scrut.1 : PC1=11, PC2=00, PC3=10 | Scrut.2 : PC1=01, PC2=11, PC3=00<br>
+        → <b>MSG1=1101 · MSG2=0011 · MSG3=1000</b> → <b>2 scrutations</b></li>
+      </ol>
+    </div>
+
+    <div class="box worked"><div class="bt">✏️ Exemple 2 — lire un signal (le piège classique)</div>
+      <i>Un signal présente 2 hauteurs, démarre parfois décalé (2 départs), et a 2 vitesses d'oscillation. Rapidité R = 1200 bauds. Débit ? Quelles modulations ?</i>
+      <ul>
+        <li>2 hauteurs → 2 <b>amplitudes (ASK)</b> · 2 départs → 2 <b>phases (PSK)</b> · 2 vitesses → 2 <b>fréquences (FSK)</b></li>
+        <li><b>V</b> = 2×2×2 = <b>8</b> → <b>n = 3 bits/état</b></li>
+        <li><b>D</b> = n × R = 3 × 1200 = <b>3600 b/s</b></li>
+        <li>Modulations : <b>ASK + PSK + FSK</b> combinées.</li>
+      </ul>
+    </div>
+
+    <div class="exam-card">
+      <h3>🎯 À toi (essaie avant d'ouvrir)</h3>
+      <p><i>4 lignes identiques, TDM synchrone. Modulation : 2 amplitudes, 4 phases, 1 fréquence. Débit ligne = 6000 b/s. Quantum = 1 état.</i></p>
+      <p>Séquence HV : <span class="bits">010 111 000 101 110 011 001 100</span></p>
+      <p>Trouve : V, n, R<sub>i</sub>, R<sub>mux</sub>, D<sub>mux</sub>, Δ<sub>mux</sub>, Q, Ts, et les messages des 4 PC + nb de scrutations.</p>
+      <details class="solution"><summary>✅ Réponse (clique)</summary><div class="inner">
+        <ul>
+          <li><b>V</b> = 2×4×1 = <b>8</b> → <b>n = 3</b></li>
+          <li><b>R<sub>i</sub></b> = 6000/3 = <b>2000 bauds</b> → <b>R<sub>mux</sub></b> = 4×2000 = <b>8000 bauds</b> → <b>D<sub>mux</sub></b> = 3×8000 = <b>24000 b/s</b></li>
+          <li><b>Δ<sub>mux</sub></b> = 1/8000 = <b>0,125 ms</b> ; <b>Q</b> = 0,125 ms ; <b>Ts</b> = 4×Q = <b>0,5 ms</b></li>
+          <li>États de 3 bits, 4 lignes, 2 scrutations :<br>
+          Scrut.1 : PC1=010, PC2=111, PC3=000, PC4=101 | Scrut.2 : PC1=110, PC2=011, PC3=001, PC4=100<br>
+          → <b>MSG1=010110 · MSG2=111011 · MSG3=000001 · MSG4=101100</b> → <b>2 scrutations</b></li>
+        </ul>
+      </div></details>
+    </div>
+
+    <h3>📌 Annales à refaire (avec solution simple)</h3>
+    <p>Les vrais exercices de tes examens. Fais-les, puis vérifie.</p>
+
+    <div class="exam-card">
+      <h4>① 2017 ACAD — Exercice 1 (6,5 pts) — multiplexage + modulation + Manchester</h4>
+      <p>3 lignes multiplexées (TDM synchrone), séquence HV de 39 bits, échelle 1 unité = 0,33 ms, avec un <b>silence de 3 unités à partir de la 9ᵉ</b>. D1=3000, D2=4000, D3=2000 b/s.</p>
+      <img class="examshot" src="annales-img/2017_p1.png" alt="2017 Exercice 1" loading="lazy">
+      <details class="solution"><summary>✅ Solution simple</summary><div class="inner">
+        <ul>
+          <li><b>Quantum :</b> 1 scrutation finit à 9 unités = 9×0,33 = 3 ms = 3 quantums → <b>Q = 1 ms</b>.</li>
+          <li><b>Rapidités :</b> Δ<sub>mux</sub> = 0,33 ms → <b>R<sub>mux</sub> = 1/0,33ms = 3000 bauds</b> ; R<sub>mux</sub> = 3·R<sub>i</sub> → <b>R<sub>i</sub> = 1000 bauds</b>.</li>
+          <li><b>Bits par ligne :</b> n<sub>i</sub> = D<sub>i</sub>/R<sub>i</sub> → n1=3, n2=4, n3=2. On découpe la HV en respectant ces tailles à chaque tour pour extraire MSG1, MSG2, MSG3.</li>
+          <li><b>Modulations :</b> M1 (2 ampl × 2 phases × 2 fréq) → V=8 → ASK+PSK+FSK ; M2 (×4 fréq) → V=16 ; M3 (×1 fréq) → V=4.</li>
+          <li><b>Manchester :</b> dessiner MSG1 avec transition au milieu de chaque bit (front descendant=1, montant=0).</li>
+        </ul>
+      </div></details>
+    </div>
+
+    <div class="exam-card">
+      <h4>② 2020 ACAD B&amp;C — Exercice 1 (7,5 pts) — TDM + lecture de signal</h4>
+      <p>Débit ligne HV = 9600 b/s. Signal lu → V = 16 (n = 4). 4 PC. Quantum = « un état et demi ».</p>
+      <details class="solution"><summary>✅ Solution simple</summary><div class="inner">
+        <ul>
+          <li><b>R<sub>mux</sub></b> = D/n = 9600/4 = <b>2400 bauds</b> → <b>Δ<sub>mux</sub></b> = 1/2400 ≈ <b>0,42 ms</b>.</li>
+          <li><b>Quantum</b> = 1,5 état = 0,42 + 0,21 = <b>0,63 ms</b> → buffer = 1,5 × 4 = <b>6 bits</b>.</li>
+          <li>4 PC → <b>R<sub>i</sub></b> = 2400/4 = <b>600 bauds</b> → <b>Δ<sub>i</sub></b> = 1/600 ≈ <b>1,66 ms</b> par état sur chaque ligne basse vitesse.</li>
+          <li>On démultiplexe la séquence en paquets de 4 bits, répartis sur les 4 PC, puis on dessine chaque message.</li>
+        </ul>
+      </div></details>
+    </div>
+
+    <div class="exam-card">
+      <h4>③ 2022 ISIL — Exercice 3 (6,5 pts) — modulation + multiplexage + fréquentiel</h4>
+      <p>MOD1 : 2 amplitudes (A1, A2) + 2 phases (0, π). MOD2 : 2 amplitudes + 3 phases (0, π, π/2). Même fréquence.</p>
+      <details class="solution"><summary>✅ Solution simple</summary><div class="inner">
+        <ul>
+          <li><b>Valences :</b> MOD1 : V1 = 2×2 = <b>4</b> (n1 = 2). MOD2 : V2 = <b>8</b> (corrigé : 2 amplitudes × 2 phases × 2 fréquences, n2 = 3). <i>La valence finale est toujours une puissance de 2.</i></li>
+          <li><b>Codage :</b> associer chaque combinaison (amplitude, phase) à un groupe de bits (table « Bits → A, φ »).</li>
+          <li><b>Signal :</b> dessiner le signal analogique du message en respectant Q = 1 ms, en laissant un blanc là où une ligne n'a pas de donnée.</li>
+          <li><b>Multiplexage fréquentiel :</b> il impose ≥ 1 <b>bande de garde</b>, une transmission <b>en parallèle</b> des messages, et l'usage d'<b>au moins 2 fréquences</b>.</li>
+        </ul>
+      </div></details>
+    </div>
+
+    <div class="box exam"><div class="bt">🎯 Le piège n°1 à éviter</div>
+      Ne confonds pas <b>R<sub>i</sub></b> (rapidité d'une petite ligne, lente) et <b>R<sub>mux</sub></b> (la grosse ligne, rapide) : <b>R<sub>mux</sub> = k × R<sub>i</sub></b>. Et n'oublie pas : <b>baud ≠ bit/s</b> (D = n × R).</div>
   </section>
 
   <!-- ============ RECETTES ============ -->
